@@ -1,0 +1,22 @@
+.text-white {
+    color: white;
+}
+
+.p-5{
+    padding: 5px;
+}
+
+.color-text-red {
+    color: red;
+}
+
+.color-text-green {
+    color: darkgreen;
+}
+
+input:valid {
+    color: green;
+}
+input:invalid {
+    color: red;
+}

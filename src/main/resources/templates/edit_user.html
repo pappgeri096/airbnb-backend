@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="header_template.html :: head-fragment">
+    <meta charset="UTF-8">
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Edit Profile</title>
+</head>
+<body>
+
+
+<div th:replace="navbar.html :: copy"></div>
+
+<div class="container" style="margin-bottom: 15px">
+    <div class="col-lg-6 col-lg-offset-3">
+        <h3 class="bg-success text-white p-5">Edit Profile</h3>
+        <form id="edit-profile-form" action="/user/edit" method="post">
+            <div class="form-group mx-auto">
+
+                <div>
+                    <label for="first-name">First Name</label>
+                    <input id="first-name" class="form-control" type="text" name="first_name" th:value="${userData.getFirstName()}"
+                           placeholder="Length: minimum 1 maximum 255 characters" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,255}$" required>
+                </div>
+                <br>
+
+                <div>
+                    <label for="surname">Surname</label>
+                    <input id="surname" class="form-control" type="text" name="surname" th:value="${userData.getSurname()}"
+                           placeholder="Length: minimum 1 maximum 255 characters" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,255}$" required>
+                </div>
+                <br>
+
+                <p>Passwords must contain at least one UpperCase and one LowerCase letters, and one Number or SpecialChar. Min 8 max 255 characters</p>
+                <label for="old-password">Old password</label>
+                <input id="old-password" class="form-control" type="password" name="password" placeholder="Length: minimum 1 maximum 255 characterss; e.g.: abc1Dfgh"
+                       pattern="(?=^.{8,255}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required><br>
+
+
+                <label id="old-password-label" for="old-password">New password</label>
+                <input id="new-password" class="form-control" type="password" name="password_confirmation" placeholder="Length: minimum 1 maximum 255 characterss; e.g.: abc1Dfgh"
+                       pattern="(?=^.{8,255}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"><br>
+
+                <label for="phone-input">Phone Number</label>
+                <input id="phone-input" class="form-control" type="tel" name="phone_number" placeholder="pattern: +36205561234" th:value="${userData.getPhoneNumber()}"
+                       pattern="[+]{1}[0-9]{7,254}" required><br>
+
+
+                <div class="form-group">
+
+                    <label for="country-input">Country</label>
+                    <input id="country-input" class="form-control" type="text" name="country" placeholder="Length: minimum 1 maximum 255 characters"
+                           th:value="${userData.getCountry()}" pattern="^[\w\.\/\s_%-]{1,255}$" required><br>
+
+                    <label for="city-input">City</label>
+                    <input id="city-input" class="form-control" type="text" name="city" placeholder="Length: minimum 1 maximum 255 characters"
+                           th:value="${userData.getCity()}" pattern="^[\w\.\/\s_%-]{1,255}$" required><br>
+
+                    <label for="zip-input">Zip code</label>
+                    <input id="zip-input" class="form-control" type="text" name="zip_code" placeholder="Length: minimum 1 maximum 255 characters"
+                           th:value="${userData.getZipCode()}" pattern="^[\w\.\/\s_%-]{1,255}$" required><br>
+
+                    <label for="address-input">Address</label>
+                    <input id="address-input" class="form-control" type="text" name="address" placeholder="Length: minimum 1 maximum 255 characters"
+                           th:value="${userData.getAddress()}" pattern="^[\w\.\/\s_%-]{1,255}$" required>
+                </div>
+
+                <button form="edit-profile-form" type="submit" value="Submit" id="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="footer.html :: copy"></div>
+
+</body>
+</html>
