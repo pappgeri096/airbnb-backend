@@ -40,7 +40,7 @@
             <button type="submit" class="btn btn-info">Edit Profile</button>
         </form>
 
-        <form id="delete-user" method="get" action="/user/delete">
+        <form id="delete-user" method="post" action="/user/delete">
             <button form="delete-user" type="submit" class="btn btn-secondary" name="userId" th:value="${userData.getId()}">Delete profile</button>
         </form>
     </div>

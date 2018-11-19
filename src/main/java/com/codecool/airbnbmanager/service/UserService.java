@@ -20,12 +20,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public boolean isPasswordCorrect(String candidate, String email) {
-        User user = userRepository.findUserByEmail(email);
-        String hashed = user.getPasswordHash();
-
-        return PasswordHashing.checkPassword(candidate, hashed);
+    public void update(User user) {
+        userRepository.save(user);
     }
 
+    public User handleFindUserByEmail(String userEmail) {
+        return userRepository.findUserByEmail(userEmail);
+    }
 
 }
