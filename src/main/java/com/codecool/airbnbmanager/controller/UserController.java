@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    private final LodgingsService lodgingsService;
 
     @Autowired
-    LodgingsService lodgingsService;
-
+    public UserController(UserService userService, LodgingsService lodgingsService) {
+        this.userService = userService;
+        this.lodgingsService = lodgingsService;
+    }
 }

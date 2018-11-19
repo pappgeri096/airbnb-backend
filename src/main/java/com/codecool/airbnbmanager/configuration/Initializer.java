@@ -11,10 +11,8 @@ import com.codecool.airbnbmanager.util.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContextListener;
-
 @Component
-public class Initializer implements ServletContextListener {
+public class Initializer {
 
     private static final String GUEST_EMAIL = "guest@fakedomain.com";
 
@@ -25,6 +23,7 @@ public class Initializer implements ServletContextListener {
     public Initializer(UserService userService, LodgingsService lodgingsService) {
         this.userService = userService;
         this.lodgingsService = lodgingsService;
+        init();
     }
 
 
