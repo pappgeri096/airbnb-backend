@@ -4,8 +4,11 @@ import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.LodgingsService;
 import com.codecool.airbnbmanager.service.UserService;
+import com.codecool.airbnbmanager.service.api.MainPageServiceREST;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,28 +17,25 @@ import java.util.List;
 @RestController
 public class MainPageControllerREST {
 
-    private List<Lodgings> lodgings;
-    private User user;
     private String userEmail = "guest@fakedomain.com";
 
     private final UserService userService;
     private final LodgingsService lodgingsService;
+    private final MainPageServiceREST mainPageServiceREST;
 
     @Autowired
-    public MainPageControllerREST(LodgingsService lodgingsService, UserService userService) {
-        this.lodgingsService = lodgingsService;
+    public MainPageControllerREST(UserService userService, LodgingsService lodgingsService, MainPageServiceREST mainPageServiceREST) {
         this.userService = userService;
+        this.lodgingsService = lodgingsService;
+        this.mainPageServiceREST = mainPageServiceREST;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
+    @GetMapping(path = {"/api", "/api/index"})
+    public String indexView() {
         userEmail = "akincsei@gmail.com"; // todo: get email from session
-        user = userService.handleFindUserByEmail(userEmail);
-        lodgings = lodgingsService.findAllLodgingsByUser(user);
+//        JSONArray lodgingsWithUserEmail = mainPageServiceREST.handleLodgingsWithUserEmail(userEmail);
 
-        model.addAttribute("userData", user);
-        model.addAttribute("lodgings", lodgings);
-
+        return mainPageServiceREST.handleLodgingsWithUserEmailJackson(userEmail); // lodgingsWithUserEmail.toString(2);
     }
 
 

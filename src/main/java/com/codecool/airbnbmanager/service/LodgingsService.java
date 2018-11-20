@@ -3,6 +3,8 @@ package com.codecool.airbnbmanager.service;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
