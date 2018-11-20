@@ -1,9 +1,14 @@
 package com.codecool.airbnbmanager.util;
 
+import com.codecool.airbnbmanager.model.Lodgings;
+import com.codecool.airbnbmanager.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import jdk.nashorn.internal.runtime.PropertyAccess;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -165,6 +170,50 @@ public class JsonMappingHandler {
         return objectList;
     }
 
+
+    public static <T> String mapJavaObjectWithoutFields(T object, List<String> fieldList) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode userNode = mapper.convertValue(object, ObjectNode.class).without(fieldList);
+        ObjectNode rootNode = mapper.createObjectNode();
+        rootNode.set("data", userNode);
+
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+    }
+
+    public static <T> String mapJavaObjectWithFields(T object, List<String> fieldList) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode rootNode = mapper.createObjectNode();
+        JsonNode userNode = mapper.convertValue(object, ObjectNode.class).retain(fieldList);
+        rootNode.set("data", userNode);
+
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+    }
+
+
+    // todo: json practice
+//    public static <T> String objectNodeAndJsonNode(T user, List<Lodgings> lodgingsList) throws JsonProcessingException {
+//
+//        String lodgingsString = writeListToJsonString(lodgingsList);
+//
+//        String userAllData = mapObjectToJsonString(user);
+//
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        ObjectNode rootNode = mapper.createObjectNode();
+//
+//        rootNode.put("lodgingsList", lodgingsString);
+//
+//        ObjectNode userNode = mapper.createObjectNode();
+//        userNode.put("user", userAllData).without("passwordHash");
+//
+//        rootNode.put("userData", userAllData).without("passwordHash");
+//
+//        String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+//
+//        return jsonString;
+//    }
 
 
 }

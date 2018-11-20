@@ -1,17 +1,12 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.model.Lodgings;
-import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.service.LodgingsService;
-import com.codecool.airbnbmanager.service.UserService;
-import com.codecool.airbnbmanager.service.api.MainPageServiceREST;
-import org.json.JSONArray;
+import com.codecool.airbnbmanager.service.api.UserServiceREST;
+import com.codecool.airbnbmanager.util.UserFieldType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,23 +14,22 @@ public class MainPageControllerREST {
 
     private String userEmail = "guest@fakedomain.com";
 
-    private final UserService userService;
-    private final LodgingsService lodgingsService;
-    private final MainPageServiceREST mainPageServiceREST;
+    private final UserServiceREST userServiceREST;
 
     @Autowired
-    public MainPageControllerREST(UserService userService, LodgingsService lodgingsService, MainPageServiceREST mainPageServiceREST) {
-        this.userService = userService;
-        this.lodgingsService = lodgingsService;
-        this.mainPageServiceREST = mainPageServiceREST;
+    public MainPageControllerREST(UserServiceREST userServiceREST) {
+        this.userServiceREST = userServiceREST;
     }
 
     @GetMapping(path = {"/api", "/api/index"})
     public String indexView() {
         userEmail = "akincsei@gmail.com"; // todo: get email from session
-//        JSONArray lodgingsWithUserEmail = mainPageServiceREST.handleLodgingsWithUserEmail(userEmail);
 
-        return mainPageServiceREST.handleLodgingsWithUserEmailJackson(userEmail); // lodgingsWithUserEmail.toString(2);
+        List<String> fieldsToInclude = new ArrayList<>();
+        fieldsToInclude.add(UserFieldType.FIRST_NAME.getInputString());
+        fieldsToInclude.add(UserFieldType.LANDLORD_LODGINGS.getInputString());
+
+        return userServiceREST.createJsonStringByAndIncluding(userEmail, fieldsToInclude);
     }
 
 
