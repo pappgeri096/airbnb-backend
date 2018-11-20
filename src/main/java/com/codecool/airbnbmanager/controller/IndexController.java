@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.List;
@@ -16,11 +17,23 @@ import java.util.List;
 @SessionAttributes
 public class IndexController {
 
-    private String firstName;
-
-    private final LodgingsService lodgingsService;
+    private List<Lodgings> lodgings;
+    private User user;
+    private String userEmail = "guest@fakedomain.com";
 
     private final UserService userService;
+    private final LodgingsService lodgingsService;
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        userEmail = "akincsei@gmail.com"; // todo: get email from session
+        user = userService.handleFindUserByEmail(userEmail);
+        lodgings = lodgingsService.findAllLodgingsByUser(user);
+
+        model.addAttribute("userData", user);
+        model.addAttribute("lodgings", lodgings);
+
+    }
 
     @Autowired
     public IndexController(LodgingsService lodgingsService, UserService userService) {
@@ -30,14 +43,10 @@ public class IndexController {
 
 
     @GetMapping(path = {"/", "/index"})
-    public String indexView(Model model) {
-        String userEmail = "akincsei@gmail.com";
-        User user = userService.handleFindUserByEmail(userEmail);
-        firstName = user.getFirstName();
-        List<Lodgings> lodgings = lodgingsService.findAllLodgingsByUser(user);
-
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("lodgings", lodgings);
+    public String indexView() {
+        userEmail = "akincsei@gmail.com"; // todo: get email from session
+        user = userService.handleFindUserByEmail(userEmail);
+        lodgings = lodgingsService.findAllLodgingsByUser(user);
 
         return "index";
     }

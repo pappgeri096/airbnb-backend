@@ -11,9 +11,6 @@
 <body>
 <div th:replace="navbar.html :: copy"></div>
 
-<label for="user-type"></label>
-<input id="user-type" type="text" th:value="${userClass}" hidden>
-
 <div id="profile-data" class="row">
     <div id="data-list" class="col-sm-3">
         <!--left col-->
@@ -41,7 +38,7 @@
         </form>
 
         <form id="delete-user" method="post" action="/user/delete">
-            <button form="delete-user" type="submit" class="btn btn-secondary" name="userId" th:value="${userData.getId()}">Delete profile</button>
+            <button form="delete-user" type="submit" class="btn btn-secondary" name="user_id" th:value="${userData.getId()}">Delete profile</button>
         </form>
     </div>
 </div>
