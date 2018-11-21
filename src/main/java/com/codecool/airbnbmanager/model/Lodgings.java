@@ -23,6 +23,7 @@ public class Lodgings {
     private long telecommunicationBill;
     private long cleaningCost;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ToDo> todos = new HashSet<>();
 

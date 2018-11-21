@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.util;
 
 public enum LodgingDataField {
+    ID("id"),
     NAME("lodging_name"),
     TYPE("lodging_type"),
     DAILY_PRICE("daily_price"),

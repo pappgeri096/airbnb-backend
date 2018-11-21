@@ -5,10 +5,13 @@ import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.service.api.ToDoServiceREST;
+import com.codecool.airbnbmanager.util.JsonMappingHandler;
+import com.codecool.airbnbmanager.util.LodgingDataField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LodgingsService {
@@ -36,4 +39,27 @@ public class LodgingsService {
         }
         return false;
     }
+
+    public Lodgings handleFindById(Long id) {
+        return lodgingsRepository.findById(id).orElse(null);
+    }
+
+    public Long validateRequestByLodgingsId(String body) {
+        Map<String, String> idMap = JsonMappingHandler.convertJsonArraytoMap(body);
+
+        if (idMap.isEmpty()) {
+            return null;
+        }
+
+        Long lodgingsId = Long.valueOf(idMap.get(LodgingDataField.ID.getInputString()));
+        Lodgings mightBeLodgings = handleFindById(lodgingsId);
+
+        if (mightBeLodgings == null) {
+            return null;
+        }
+
+        return lodgingsId;
+    }
+
+
 }

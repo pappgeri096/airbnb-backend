@@ -75,13 +75,8 @@ public class UserServiceREST {
 
         boolean isUpdateSuccessful = false;
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(userData);
+        if (map.isEmpty()) {
             return isUpdateSuccessful;
         }
 
@@ -118,13 +113,9 @@ public class UserServiceREST {
 
         boolean isDeletionSuccessful = false;
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(userData);
+
+        if (map.isEmpty()) {
             return isDeletionSuccessful;
         }
 
@@ -141,13 +132,9 @@ public class UserServiceREST {
 
         boolean isAdditionSuccessful = false;
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(userData);
+
+        if (map.isEmpty()) {
             return isAdditionSuccessful;
         }
 

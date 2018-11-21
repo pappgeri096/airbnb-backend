@@ -1,7 +1,9 @@
 package com.codecool.airbnbmanager.util;
 
+import ch.qos.logback.classic.Logger;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
+import com.codecool.airbnbmanager.service.api.UserServiceREST;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import jdk.nashorn.internal.runtime.PropertyAccess;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class JsonMappingHandler {
+
+    private static final Logger LOGGER = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(UserServiceREST.class);
 
     // From Java objects to JSON
 
@@ -94,11 +99,17 @@ public class JsonMappingHandler {
         }
     }
 
-    public static Map<String, String> convertJsonArraytoMap(String jsonArray) throws IOException {
+    public static Map<String, String> convertJsonArraytoMap(String jsonArray) {
         ObjectMapper mapper = new ObjectMapper();
-//        Map<String, String> map = new HashMap<>();
 
-        return mapper.readValue(jsonArray, new TypeReference<Map<String, String>>(){});
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            map = mapper.readValue(jsonArray, new TypeReference<Map<String, String>>() {});
+        } catch (IOException e) {
+            LOGGER.error("Could not create map from request body {}", e.toString());
+        }
+        return map;
     }
 
     // JSON TO JAVA OBJECTS
