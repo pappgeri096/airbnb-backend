@@ -1,8 +1,8 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.api.UserServiceREST;
 import com.codecool.airbnbmanager.util.UserFieldType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -50,13 +50,6 @@ public class UserControllerREST {
         boolean isdDeletionSuccessful = userServiceREST.handleUserDeletionBy(body);
         return (isdDeletionSuccessful) ? "SUCCESS" : "FAIL";
     }
-
-
-//    @PostMapping(path = "/api/login", consumes = "text/plain")
-//    public String loginPost(@RequestBody String body) {
-//        // todo: in SB security
-//        return "redirect:index";
-//    }
 
     @PostMapping(path = "/api/user/add")
     public String userAddPost(@RequestBody String body) {

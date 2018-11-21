@@ -11,6 +11,10 @@ import com.codecool.airbnbmanager.util.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
 public class Initializer {
 
@@ -20,7 +24,7 @@ public class Initializer {
     private final LodgingsService lodgingsService;
 
     @Autowired
-    public Initializer(UserServiceREST userServiceREST, LodgingsService lodgingsService) {
+    public Initializer(UserServiceREST userServiceREST, LodgingsService lodgingsService) throws ParseException {
         this.userServiceREST = userServiceREST;
         this.lodgingsService = lodgingsService;
         init();
@@ -29,7 +33,7 @@ public class Initializer {
 
     // initialize model objects for testing todo: dele later
 
-    public void init() {
+    public void init() throws ParseException {
         AddressBuilder fullAddressLL = new AddressBuilder(
                 "Country",
                 "City",
@@ -86,6 +90,12 @@ public class Initializer {
 
         lodgingsService.add(newLodging);
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String stringDate1 = "2018-11-30";
+        Date date1 = formatter.parse(stringDate1);
+        ToDo toDo1 = new ToDo("New chairs", newLodging, date1, "Buy new chairs for kitchen in IKEA", 30_000L);
+        newLodging.addTodo(toDo1);
+
         AddressBuilder fullAddress = new AddressBuilder("Vanuatu", "Big City", "VAU-2342", "111. dfdfce Street");
 
         Lodgings newLodging2 = new Lodgings(
@@ -101,6 +111,11 @@ public class Initializer {
         );
 
         lodgingsService.add(newLodging2);
+
+        Date date2 = formatter.parse("2018-11-26");
+
+        ToDo todo2 = new ToDo("Pay bills", newLodging2, date2, "Electricity and gas", 15_683L);
+        newLodging2.addTodo(todo2);
 
         AddressBuilder fullAddressGuest = new AddressBuilder(
                 "Country",
