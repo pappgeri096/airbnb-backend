@@ -20,68 +20,68 @@
                 <div>
                     <label for="lodging-name">Lodging name</label>
                     <input id="lodging-name" class="form-control" type="text" name="lodging_name" placeholder="Lodging Name"
-                           pattern="^[\w\.\/\s_%-]{1,255}$" th:value="${lodgings.get(0).getName()}" required>
+                           pattern="^[\w\.\/\s_%-]{1,255}$" th:value="${lodgings.getName()}" required>
                 </div>
                 <br>
                 <div id="status_selection">
                     <label for="lodging-type">Choose lodging type: </label>
                     <select id="lodging-type" name="lodging_type" form="add-lodgings-form">
-                        <option th:each="type:${lodgingsTypes}" th:text="${type}" th:value="${type}" th:selected="${type.equalsIgnoreCase(lodgings.get(0).getLodgingsType())}"></option>
+                        <option th:each="type:${lodgingsTypes}" th:text="${type}" th:value="${type}" th:selected="${type.equalsIgnoreCase(lodgings.getLodgingsType())}"></option>
                     </select>
                 </div>
                 <br>
 
                 <label for="lod-price">Daily price</label>
-                <input id="lod-price" class="form-control" type="text" name="daily_price" th:value="${lodgings.get(0).getPricePerDay()}"
+                <input id="lod-price" class="form-control" type="text" name="daily_price" th:value="${lodgings.getPricePerDay()}"
                        placeholder="Digits only. Length: 1-12" pattern="^[1-9]{1}[0-9]{0,11}|[0]{1}$" required>
                 <br>
                 <label for="lod-electricity">Electricity Bill</label>
-                <input id="lod-electricity" class="form-control" type="text"  name="electricity_bill"  th:value="${lodgings.get(0).getElectricityBill()}"
+                <input id="lod-electricity" class="form-control" type="text"  name="electricity_bill"  th:value="${lodgings.getElectricityBill()}"
                        placeholder="Digits only. Length: 1-12" pattern="^[1-9]{1}[0-9]{0,11}|[0]{1}$" required>
                 <br>
                 <label for="lod-gas">Gas Bill</label>
-                <input id="lod-gas" class="form-control" type="text"  name="gas_bill"  th:value="${lodgings.get(0).getGasBill()}"
+                <input id="lod-gas" class="form-control" type="text"  name="gas_bill"  th:value="${lodgings.getGasBill()}"
                        placeholder="Digits only. Length: 1-12" pattern="^[1-9]{1}[0-9]{0,11}|[0]{1}$" required>
                 <br>
                 <label for="lod-telecom">Telecommunication Bill</label>
-                <input id="lod-telecom" class="form-control" type="text"  name="telecommunication_bill" th:value="${lodgings.get(0).getTelecommunicationBill()}"
+                <input id="lod-telecom" class="form-control" type="text"  name="telecommunication_bill" th:value="${lodgings.getTelecommunicationBill()}"
                        placeholder="Digits only. Length: 1-12" pattern="^[1-9]{1}[0-9]{0,11}|[0]{1}$" required>
                 <br>
                 <label for="lod-cleaning">Cleaning Cost</label>
-                <input id="lod-cleaning" class="form-control" type="text"  name="cleaning_cost" th:value="${lodgings.get(0).getCleaningCost()}"
+                <input id="lod-cleaning" class="form-control" type="text"  name="cleaning_cost" th:value="${lodgings.getCleaningCost()}"
                        placeholder="Digits only. Length: 1-12" pattern="^[1-9]{1}[0-9]{0,11}|[0]{1}$" required>
                 <div class="form-group">
                     <h3 class="bg-success text-white p-5">Address</h3>
 
                     <label for="lod-country">Country</label>
-                    <input id="lod-country" class="form-control" type="text" name="country" th:value="${lodgings.get(0).getCountry()}"
+                    <input id="lod-country" class="form-control" type="text" name="country" th:value="${lodgings.getCountry()}"
                            pattern="^[\w\.\/\s_%-]{1,255}$" required>
                     <br>
                     <label for="lod-city">City</label>
-                    <input id="lod-city" class="form-control" type="text" name="city" th:value="${lodgings.get(0).getCity()}"
+                    <input id="lod-city" class="form-control" type="text" name="city" th:value="${lodgings.getCity()}"
                            pattern="^[\w\.\/\s_%-]{1,255}$" required>
                     <br>
                     <label for="lod-zip">Zip code</label>
-                    <input id="lod-zip" class="form-control" type="text" name="zip_code" th:value="${lodgings.get(0).getZipCode()}"
+                    <input id="lod-zip" class="form-control" type="text" name="zip_code" th:value="${lodgings.getZipCode()}"
                            pattern="^[\w\.\/\s_%-]{1,255}$" required>
                     <br>
                     <label for="lod-address">Address</label>
-                    <input id="lod-address" class="form-control" type="text" name="address" th:value="${lodgings.get(0).getAddress()}"
+                    <input id="lod-address" class="form-control" type="text" name="address" th:value="${lodgings.getAddress()}"
                            pattern="^[\w\.\/\s_%-]{1,255}$" required>
                     <br>
                 </div>
 
                 <div>
                     <label id="email-address-label" for="email-address">Property Manager's email address</label>
-                    <input th:if="${lodgings.get(0).getPropertyManager() != null}" id="email-address" class="form-control" name="email" type="email" th:value="${lodgings.get(0).getPropertyManager().getEmail()}"
+                    <input th:if="${lodgings.getPropertyManager() != null}" id="email-address" class="form-control" name="email" type="email" th:value="${lodgings.getPropertyManager().getEmail()}"
                            pattern="[a-z0-9._%+-]{1,100}+@[a-z0-9.-]{1.100}+\.[a-z]{2,3}$" placeholder="pattern: som3thing@s0mething.som">
-                    <input th:unless="${lodgings.get(0).getPropertyManager() != null}" id="email-address-empty" class="form-control" name="email" type="email"
+                    <input th:unless="${lodgings.getPropertyManager() != null}" id="email-address-empty" class="form-control" name="email" type="email"
                            pattern="[a-z0-9._%+-]{1,100}+@[a-z0-9.-]{1.100}+\.[a-z]{2,3}$" placeholder="pattern: som3thing@s0mething.som">
 
                 </div>
                 <br>
 
-                <button form="add-lodgings-form" type="submit" id="submit" class="btn btn-primary btn-block" name="lodgingsId" th:value="${lodgings.get(0).getId()}">Submit</button>
+                <button form="add-lodgings-form" type="submit" id="submit" class="btn btn-primary btn-block" name="lodgingsId" th:value="${lodgings.getId()}">Submit</button>
             </div>
         </form>
     </div>

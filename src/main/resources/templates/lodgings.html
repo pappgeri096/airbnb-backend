@@ -82,7 +82,7 @@
 
             <a th:attr="href='todo/add?lodgingsId='+${lodging.getId()}" class="btn btn-sm btn-info" name="lodgingsId">Add ToDo</a>
 
-            <form id="delete-lodgings" method="get" action="/lodgings/delete">
+            <form id="delete-lodgings" method="post" action="/lodgings/delete">
                 <button form="delete-lodgings" type="submit" class="btn  btn-sm btn-secondary" name="lodgingsId" th:value="${lodging.getId()}">Delete</button>
             </form>
 
