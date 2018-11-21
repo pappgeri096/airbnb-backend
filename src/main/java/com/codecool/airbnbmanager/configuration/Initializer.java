@@ -2,7 +2,7 @@ package com.codecool.airbnbmanager.configuration;
 
 import com.codecool.airbnbmanager.model.*;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
-import com.codecool.airbnbmanager.service.LodgingsService;
+import com.codecool.airbnbmanager.service.api.LodgingsServiceREST;
 import com.codecool.airbnbmanager.service.api.UserServiceREST;
 import com.codecool.airbnbmanager.util.LodgingsType;
 import com.codecool.airbnbmanager.util.PasswordHashing;
@@ -21,12 +21,12 @@ public class Initializer {
     private static final String GUEST_EMAIL = "guest@fakedomain.com";
 
     private final UserServiceREST userServiceREST;
-    private final LodgingsService lodgingsService;
+    private final LodgingsServiceREST lodgingsServiceREST;
 
     @Autowired
-    public Initializer(UserServiceREST userServiceREST, LodgingsService lodgingsService) throws ParseException {
+    public Initializer(UserServiceREST userServiceREST, LodgingsServiceREST lodgingsServiceREST) throws ParseException {
         this.userServiceREST = userServiceREST;
-        this.lodgingsService = lodgingsService;
+        this.lodgingsServiceREST = lodgingsServiceREST;
         init();
     }
 
@@ -88,7 +88,7 @@ public class Initializer {
                 fullAddress0
         );
 
-        lodgingsService.handleLodgingsAddition(newLodging);
+        lodgingsServiceREST.handleLodgingsAddition(newLodging);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate1 = "2018-11-30";
@@ -96,7 +96,7 @@ public class Initializer {
         ToDo toDo1 = new ToDo("New chairs", newLodging, date1, "Buy new chairs for kitchen in IKEA", 30_000L);
         newLodging.addTodo(toDo1);
 
-        lodgingsService.handleAddTodoToLodgings(newLodging, toDo1);
+        lodgingsServiceREST.handleAddTodoToLodgings(newLodging, toDo1);
 
         AddressBuilder fullAddress = new AddressBuilder("Vanuatu", "Big City", "VAU-2342", "111. dfdfce Street");
 
@@ -112,12 +112,12 @@ public class Initializer {
                 fullAddress
         );
 
-        lodgingsService.handleLodgingsAddition(newLodging2);
+        lodgingsServiceREST.handleLodgingsAddition(newLodging2);
 
         Date date2 = formatter.parse("2018-11-26");
 
         ToDo todo2 = new ToDo("Pay bills", newLodging2, date2, "Electricity and gas", 15_683L);
-        lodgingsService.handleAddTodoToLodgings(newLodging2, todo2);
+        lodgingsServiceREST.handleAddTodoToLodgings(newLodging2, todo2);
 
         AddressBuilder fullAddressGuest = new AddressBuilder(
                 "Country",

@@ -2,13 +2,17 @@ package com.codecool.airbnbmanager.service.api;
 
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.repository.ToDoRepository;
-import com.codecool.airbnbmanager.service.LodgingsService;
-import com.codecool.airbnbmanager.util.FieldType;
+import com.codecool.airbnbmanager.util.DateFormatConverter;
 import com.codecool.airbnbmanager.util.JsonMappingHandler;
+import com.codecool.airbnbmanager.util.Status;
+import com.codecool.airbnbmanager.util.ToDoFieldType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -18,7 +22,7 @@ public class ToDoServiceREST {
     ToDoRepository toDoRepository;
 
     @Autowired
-    LodgingsService lodgingsService;
+    LodgingsServiceREST lodgingsServiceREST;
 
 
     public void handleToDoSaving(ToDo toDo) {
@@ -26,7 +30,7 @@ public class ToDoServiceREST {
     }
 
     public String getAllToDosByLodgingsId(String body) {
-        Long lodgingsId = lodgingsService.validateRequestByLodgingsId(body);
+        Long lodgingsId = lodgingsServiceREST.validateRequestByLodgingsId(body);
 
         if (lodgingsId == null) {
             return "FAIL";
@@ -37,7 +41,7 @@ public class ToDoServiceREST {
         return JsonMappingHandler.writeListToJsonString(toDoList);
     }
 
-    public String getToDoById(Long id) {
+    public String createToDoJsonStringById(Long id) {
         ToDo mightBeToDo = toDoRepository.findById(id).orElse(null);
 
         String returnString = "FAIL";
@@ -53,6 +57,42 @@ public class ToDoServiceREST {
         }
 
         return returnString;
+    }
+
+    public boolean handleToDoUpdate(String todoData) {
+        boolean isUpdateSuccessful = false;
+
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(todoData);
+        if (map.isEmpty()) {
+            System.out.println("map is empty");
+            return isUpdateSuccessful;
+
+        }
+
+        Long toDoId = Long.parseLong(map.get(ToDoFieldType.ID.getInputString()));
+        ToDo toDoToUpdate = toDoRepository.findById(toDoId).orElse(null);
+
+        if (toDoToUpdate == null) {
+            System.out.println("todo is not found with ID: " + toDoId);
+            return isUpdateSuccessful;
+        }
+
+        toDoToUpdate.setName(map.get(ToDoFieldType.NAME.getInputString()));
+
+        String deadline = map.get(ToDoFieldType.DEADLINE.getInputString());
+        Date date = DateFormatConverter.convertTimeStampToDate(deadline);
+        toDoToUpdate.setDeadline(date);
+
+        toDoToUpdate.setDescription(map.get(ToDoFieldType.DESCRIPTION.getInputString()));
+        toDoToUpdate.setPrice(Long.parseLong(map.get(ToDoFieldType.PRICE.getInputString())));
+        toDoToUpdate.setStatus(Status.valueOf(map.get(ToDoFieldType.STATUS.getInputString()).toUpperCase()));
+        boolean obsolete = map.get(ToDoFieldType.OBSOLETE.getInputString()).equals("true");
+        toDoToUpdate.setObsolete(obsolete);
+
+        toDoRepository.save(toDoToUpdate);
+        isUpdateSuccessful = true;
+
+        return isUpdateSuccessful;
     }
 
 

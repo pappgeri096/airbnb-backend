@@ -1,4 +1,4 @@
-package com.codecool.airbnbmanager.service;
+package com.codecool.airbnbmanager.service.api;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class LodgingsService {
+public class LodgingsServiceREST {
 
     @Autowired
     private LodgingsRepository lodgingsRepository;

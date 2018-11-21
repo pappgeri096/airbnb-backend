@@ -28,13 +28,8 @@ public class UserControllerREST {
     @Autowired
     private UserServiceREST userServiceREST;
 
-    @GetMapping(path = "/api/user")
+    @GetMapping(path = {"/api/user", "/api/user/edit"})
     public String userView() {
-        return userServiceREST.createJsonStringByAndExcluding(userEmail, fieldsToExcludeFromViewEdit);
-    }
-
-    @GetMapping(path = "/api/user/edit")
-    public String getUserEdit() {
         return userServiceREST.createJsonStringByAndExcluding(userEmail, fieldsToExcludeFromViewEdit);
     }
 

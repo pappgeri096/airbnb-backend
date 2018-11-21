@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 @RestController
 public class ToDoControllerREST extends HttpServlet {
 
+    private static final String SUCCESS_MESSAGE = "SUCCESS";
+    private static final String FAIL_MESSAGE = "FAIL";
+
     @Autowired
     private ToDoServiceREST toDoService;
 
@@ -21,10 +24,15 @@ public class ToDoControllerREST extends HttpServlet {
     }
 
     @GetMapping(path = {"/api/todo/{id}", "/api/todo/edit/{id}"})
-    public String toDoViewSingle(@PathVariable(name = "id") Long id) {
-        return toDoService.getToDoById(id);
+    public String toDoViewSingleAndEditGet(@PathVariable(name = "id") Long id) {
+        return toDoService.createToDoJsonStringById(id);
     }
 
+    @PutMapping(path = "/api/todo/edit", consumes = "text/plain")
+    public String toDoEditPost(@RequestBody String body) {
+        boolean isUpdateSuccessful = toDoService.handleToDoUpdate(body);
+        return (isUpdateSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    }
 //
 //            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
 //            engine.process(templateToRender, context, response.getWriter());
