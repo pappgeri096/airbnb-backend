@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.util.Status;
+import com.codecool.airbnbmanager.util.enums.ToDoStatusType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +13,8 @@ public class ToDo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+
+    @JsonIgnore
     @ManyToOne
     private Lodgings lodgings;
     @Temporal(TemporalType.DATE)
@@ -20,7 +23,7 @@ public class ToDo {
     private long price;
     @Column(name = "Status")
     @Enumerated(EnumType.STRING)
-    private Status status = Status.NEW;
+    private ToDoStatusType status = ToDoStatusType.NEW;
     private boolean obsolete = false;
 
     public ToDo() {
@@ -82,11 +85,11 @@ public class ToDo {
         this.price = price;
     }
 
-    public Status getStatus() {
+    public ToDoStatusType getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ToDoStatusType status) {
         this.status = status;
     }
 

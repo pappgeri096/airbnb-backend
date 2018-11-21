@@ -6,13 +6,13 @@ import java.util.Date;
 
 public class DateFormatConverter {
 
-    public static Date convertTimeStampToDate(String dateString) {
+    public static Date convertStringToDate(String dateString) {
 
         Date date = new Date();
 
         if (dateString.contains("-")) {
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
                 date = formatter.parse(dateString);

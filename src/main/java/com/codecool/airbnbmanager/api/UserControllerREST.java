@@ -1,7 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.service.api.UserServiceREST;
-import com.codecool.airbnbmanager.util.UserFieldType;
+import com.codecool.airbnbmanager.service.UserServiceREST;
+import com.codecool.airbnbmanager.util.enums.UserFieldType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.codecool.airbnbmanager.configuration.Initializer.FAIL_MESSAGE;
+import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSAGE;
 
 // todo: session!!!!!!!!!!
 @RestController
@@ -36,20 +39,20 @@ public class UserControllerREST {
     @PutMapping(path = "/api/user/edit", consumes = "text/plain")
     public String postEditedUserData(@RequestBody String body) {
         boolean isUpdateSuccessFul = userServiceREST.handleUserUpdate(body);
-        return (isUpdateSuccessFul) ? "SUCCESS" : "FAIL";
+        return (isUpdateSuccessFul) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
     }
 
 
-    @DeleteMapping(path = "/api/user/delete", consumes = "text/plain")
-    public String userDeletion(@RequestBody String body) {
-        boolean isdDeletionSuccessful = userServiceREST.handleUserDeletionBy(body);
-        return (isdDeletionSuccessful) ? "SUCCESS" : "FAIL";
+    @DeleteMapping(path = "/api/user/delete/{id}")
+    public String userDeletion(@PathVariable(name = "id") Long id) {
+        boolean isdDeletionSuccessful = userServiceREST.handleUserDeletionBy(id);
+        return (isdDeletionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
     }
 
     @PostMapping(path = "/api/user/add")
     public String userAddPost(@RequestBody String body) {
 
         boolean isAdditionSuccessFul = userServiceREST.handleUserAddition(body);
-        return (isAdditionSuccessFul) ? "SUCCESS" : "FAIL";
+        return (isAdditionSuccessFul) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
     }
 }

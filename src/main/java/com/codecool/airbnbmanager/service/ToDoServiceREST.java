@@ -1,9 +1,11 @@
-package com.codecool.airbnbmanager.service.api;
+package com.codecool.airbnbmanager.service;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.repository.ToDoRepository;
 import com.codecool.airbnbmanager.util.*;
+import com.codecool.airbnbmanager.util.enums.ToDoStatusType;
+import com.codecool.airbnbmanager.util.enums.ToDoFieldType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,11 @@ public class ToDoServiceREST {
         toDoRepository.save(toDo);
     }
 
-    public String getAllToDosByLodgingsId(String body) {
-        Long lodgingsId = lodgingsServiceREST.validateRequestByLodgingsId(body);
-
-        if (lodgingsId == null) {
-            return "FAIL";
-        }
+    public String getAllToDosByLodgingsId(Long lodgingsId) {
 
         List<ToDo> toDoList = new ArrayList<>(toDoRepository.findAllByLodgingsId(lodgingsId));
 
-        return JsonMappingHandler.writeListToJsonString(toDoList);
+        return JsonMappingHandler.mapJavaObjectListToJsonArray(toDoList);
     }
 
     public String createToDoJsonStringById(Long id) {
@@ -55,16 +52,18 @@ public class ToDoServiceREST {
     }
 
     public boolean handleToDoUpdate(String todoData) {
+
         boolean isUpdateSuccessful = false;
 
         Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(todoData);
+
         if (map.isEmpty()) {
             System.out.println("map is empty");
             return isUpdateSuccessful;
 
         }
 
-        Long toDoId = Long.parseLong(map.get(ToDoFieldType.ID.getInputString()));
+        long toDoId = Long.parseLong(map.get(ToDoFieldType.ID.getInputString()));
         ToDo toDoToUpdate = toDoRepository.findById(toDoId).orElse(null);
 
         if (toDoToUpdate == null) {
@@ -75,12 +74,12 @@ public class ToDoServiceREST {
         toDoToUpdate.setName(map.get(ToDoFieldType.NAME.getInputString()));
 
         String deadline = map.get(ToDoFieldType.DEADLINE.getInputString());
-        Date date = DateFormatConverter.convertTimeStampToDate(deadline);
+        Date date = DateFormatConverter.convertStringToDate(deadline);
         toDoToUpdate.setDeadline(date);
 
         toDoToUpdate.setDescription(map.get(ToDoFieldType.DESCRIPTION.getInputString()));
         toDoToUpdate.setPrice(Long.parseLong(map.get(ToDoFieldType.PRICE.getInputString())));
-        toDoToUpdate.setStatus(Status.valueOf(map.get(ToDoFieldType.STATUS.getInputString()).toUpperCase()));
+        toDoToUpdate.setStatus(ToDoStatusType.valueOf(map.get(ToDoFieldType.STATUS.getInputString()).toUpperCase()));
         boolean obsolete = map.get(ToDoFieldType.OBSOLETE.getInputString()).equals("true");
         toDoToUpdate.setObsolete(obsolete);
 
@@ -117,12 +116,12 @@ public class ToDoServiceREST {
         toDo.setLodgings(lodgings);
 
         String deadline = map.get(ToDoFieldType.DEADLINE.getInputString());
-        Date date = DateFormatConverter.convertTimeStampToDate(deadline);
+        Date date = DateFormatConverter.convertStringToDate(deadline);
         toDo.setDeadline(date);
 
         toDo.setDescription(map.get(ToDoFieldType.DESCRIPTION.getInputString()));
         toDo.setPrice(Long.parseLong(map.get(ToDoFieldType.PRICE.getInputString())));
-        toDo.setStatus(Status.valueOf(map.get(ToDoFieldType.STATUS.getInputString()).toUpperCase()));
+        toDo.setStatus(ToDoStatusType.valueOf(map.get(ToDoFieldType.STATUS.getInputString()).toUpperCase()));
 
         boolean obsolete = map.get(ToDoFieldType.OBSOLETE.getInputString()).equals("true");
         toDo.setObsolete(obsolete);

@@ -1,4 +1,4 @@
-package com.codecool.airbnbmanager.util;
+package com.codecool.airbnbmanager.util.enums;
 
 public enum LodgingsType {
     APARTMENT("APARTMENT"),

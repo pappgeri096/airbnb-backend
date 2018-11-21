@@ -2,13 +2,13 @@ package com.codecool.airbnbmanager.configuration;
 
 import com.codecool.airbnbmanager.model.*;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
-import com.codecool.airbnbmanager.service.api.LodgingsServiceREST;
-import com.codecool.airbnbmanager.service.api.ToDoServiceREST;
-import com.codecool.airbnbmanager.service.api.UserServiceREST;
-import com.codecool.airbnbmanager.util.LodgingsType;
+import com.codecool.airbnbmanager.service.LodgingsServiceREST;
+import com.codecool.airbnbmanager.service.ToDoServiceREST;
+import com.codecool.airbnbmanager.service.UserServiceREST;
+import com.codecool.airbnbmanager.util.enums.LodgingsType;
 import com.codecool.airbnbmanager.util.PasswordHashing;
 import com.codecool.airbnbmanager.util.UserFactory;
-import com.codecool.airbnbmanager.util.UserType;
+import com.codecool.airbnbmanager.util.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,9 @@ import java.util.Date;
 public class Initializer {
 
     private static final String GUEST_EMAIL = "guest@fakedomain.com";
+    public static final String SUCCESS_MESSAGE = "SUCCESS";
+    public static final String FAIL_MESSAGE = "FAIL";
+
 
     private final UserServiceREST userServiceREST;
     private final LodgingsServiceREST lodgingsServiceREST;
@@ -32,10 +35,6 @@ public class Initializer {
         this.toDoServiceREST = toDoServiceREST;
         init();
     }
-
-
-
-
 
     // initialize model objects for testing todo: dele later
 
@@ -106,7 +105,7 @@ public class Initializer {
             e.printStackTrace();
         }
         ToDo toDo1 = new ToDo("New chairs", newLodging, date1, "Buy new chairs for kitchen in IKEA", 30_000L);
-        newLodging.addTodo(toDo1);
+//        newLodging.addTodo(toDo1);
 
         toDoServiceREST.handleToDoSaving(toDo1);
 

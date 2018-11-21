@@ -1,7 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.service.api.UserServiceREST;
-import com.codecool.airbnbmanager.util.UserFieldType;
+import com.codecool.airbnbmanager.service.UserServiceREST;
+import com.codecool.airbnbmanager.util.enums.UserFieldType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
