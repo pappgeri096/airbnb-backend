@@ -4,7 +4,6 @@ import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
-import com.codecool.airbnbmanager.service.api.ToDoServiceREST;
 import com.codecool.airbnbmanager.util.JsonMappingHandler;
 import com.codecool.airbnbmanager.util.LodgingDataField;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +28,6 @@ public class LodgingsServiceREST {
 
     public List<Lodgings> findAllLodgingsByUser(User user) {// todo: handles only landlords
         return lodgingsRepository.findAllByLandlord(user);
-    }
-
-    public boolean handleAddTodoToLodgings(Lodgings lodgings, ToDo toDo) {
-        if (lodgingsRepository.findById(lodgings.getId()).isPresent()) {
-            toDo.setLodgings(lodgings);
-            toDoServiceREST.handleToDoSaving(toDo);
-            return true;
-        }
-        return false;
     }
 
     public Lodgings handleFindById(Long id) {

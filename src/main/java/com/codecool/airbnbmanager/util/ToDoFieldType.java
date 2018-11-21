@@ -2,9 +2,9 @@ package com.codecool.airbnbmanager.util;
 
 public enum ToDoFieldType {
     ID("id"),
-    FIRST_NAME("first_name"),
     NAME("name"),
     LODGINGS("lodgings"),
+    LODGINGS_ID("lodgingsId"),
     DEADLINE("deadline"),
     DESCRIPTION("description"),
     PRICE("price"),

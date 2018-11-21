@@ -33,6 +33,20 @@ public class ToDoControllerREST extends HttpServlet {
         boolean isUpdateSuccessful = toDoService.handleToDoUpdate(body);
         return (isUpdateSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
     }
+
+    @DeleteMapping(path = "/api/todo/delete/{id}")
+    public String todoDeletion(@PathVariable(name = "id") Long id) {
+        boolean isDeletionSuccessful = toDoService.handleToDoDeletionBy(id);
+        return (isDeletionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+
+    }
+
+    @PostMapping(path = "/api/todo/add")
+    public String toDoAddition(@RequestBody String body) {
+        boolean isAdditionSuccessful = toDoService.handleToDoAddition(body);
+        return (isAdditionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+
+    }
 //
 //            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
 //            engine.process(templateToRender, context, response.getWriter());

@@ -3,6 +3,7 @@ package com.codecool.airbnbmanager.configuration;
 import com.codecool.airbnbmanager.model.*;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.service.api.LodgingsServiceREST;
+import com.codecool.airbnbmanager.service.api.ToDoServiceREST;
 import com.codecool.airbnbmanager.service.api.UserServiceREST;
 import com.codecool.airbnbmanager.util.LodgingsType;
 import com.codecool.airbnbmanager.util.PasswordHashing;
@@ -22,18 +23,23 @@ public class Initializer {
 
     private final UserServiceREST userServiceREST;
     private final LodgingsServiceREST lodgingsServiceREST;
+    private final ToDoServiceREST toDoServiceREST;
 
     @Autowired
-    public Initializer(UserServiceREST userServiceREST, LodgingsServiceREST lodgingsServiceREST) throws ParseException {
+    public Initializer(UserServiceREST userServiceREST, LodgingsServiceREST lodgingsServiceREST, ToDoServiceREST toDoServiceREST) {
         this.userServiceREST = userServiceREST;
         this.lodgingsServiceREST = lodgingsServiceREST;
+        this.toDoServiceREST = toDoServiceREST;
         init();
     }
 
 
+
+
+
     // initialize model objects for testing todo: dele later
 
-    private void init() throws ParseException {
+    private void init() {
         AddressBuilder fullAddressLL = new AddressBuilder(
                 "Country",
                 "City",
@@ -92,11 +98,17 @@ public class Initializer {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate1 = "2018-11-30";
-        Date date1 = formatter.parse(stringDate1);
+        Date date1 = null;
+        try {
+            date1 = formatter.parse(stringDate1);
+        } catch (ParseException e) {
+            System.out.println("Cannot parse date1 in initializer");
+            e.printStackTrace();
+        }
         ToDo toDo1 = new ToDo("New chairs", newLodging, date1, "Buy new chairs for kitchen in IKEA", 30_000L);
         newLodging.addTodo(toDo1);
 
-        lodgingsServiceREST.handleAddTodoToLodgings(newLodging, toDo1);
+        toDoServiceREST.handleToDoSaving(toDo1);
 
         AddressBuilder fullAddress = new AddressBuilder("Vanuatu", "Big City", "VAU-2342", "111. dfdfce Street");
 
@@ -114,10 +126,16 @@ public class Initializer {
 
         lodgingsServiceREST.handleLodgingsAddition(newLodging2);
 
-        Date date2 = formatter.parse("2018-11-26");
+        Date date2 = null;
+        try {
+            date2 = formatter.parse("2018-11-26");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("Cannot parse date 2 in initializer");
+        }
 
         ToDo todo2 = new ToDo("Pay bills", newLodging2, date2, "Electricity and gas", 15_683L);
-        lodgingsServiceREST.handleAddTodoToLodgings(newLodging2, todo2);
+        toDoServiceREST.handleToDoSaving(todo2);
 
         AddressBuilder fullAddressGuest = new AddressBuilder(
                 "Country",
