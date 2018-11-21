@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +84,7 @@ public class JsonMappingHandler {
      *
      * */
 
-    protected static <T, K, V> void writeMapToFile(String filePath, Map<K, V> mapObject) {
+    public static <T, K, V> void writeMapToFile(String filePath, Map<K, V> mapObject) {
 
         ObjectMapper orderMapper = new ObjectMapper();
         try {
@@ -93,9 +94,16 @@ public class JsonMappingHandler {
         }
     }
 
+    public static Map<String, String> convertJsonArraytoMap(String jsonArray) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+//        Map<String, String> map = new HashMap<>();
+
+        return mapper.readValue(jsonArray, new TypeReference<Map<String, String>>(){});
+    }
+
     // JSON TO JAVA OBJECTS
 
-    protected static <T> T readJsonStringToObject(String jsonString, Class<T> className) {
+    protected static <T> T readJsonArrayToObject(String jsonString, Class<T> className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -123,7 +131,7 @@ public class JsonMappingHandler {
         return someObject;
     }
 
-    protected static <E> List<E> readJsonArrayStringToObjectList(String jsonArray, Class<E> className) {
+    protected static <E> List<E> readJsonArrayToObjectList(String jsonArray, Class<E> className) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 

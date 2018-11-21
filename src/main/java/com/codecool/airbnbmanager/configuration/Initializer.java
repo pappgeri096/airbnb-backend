@@ -3,7 +3,7 @@ package com.codecool.airbnbmanager.configuration;
 import com.codecool.airbnbmanager.model.*;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.service.LodgingsService;
-import com.codecool.airbnbmanager.service.UserService;
+import com.codecool.airbnbmanager.service.api.UserServiceREST;
 import com.codecool.airbnbmanager.util.LodgingsType;
 import com.codecool.airbnbmanager.util.PasswordHashing;
 import com.codecool.airbnbmanager.util.UserFactory;
@@ -16,12 +16,12 @@ public class Initializer {
 
     private static final String GUEST_EMAIL = "guest@fakedomain.com";
 
-    private final UserService userService;
+    private final UserServiceREST userServiceREST;
     private final LodgingsService lodgingsService;
 
     @Autowired
-    public Initializer(UserService userService, LodgingsService lodgingsService) {
-        this.userService = userService;
+    public Initializer(UserServiceREST userServiceREST, LodgingsService lodgingsService) {
+        this.userServiceREST = userServiceREST;
         this.lodgingsService = lodgingsService;
         init();
     }
@@ -47,7 +47,7 @@ public class Initializer {
                 fullAddressLL
         );
 
-        userService.add(testLandlord);
+        userServiceREST.add(testLandlord);
 
         AddressBuilder fullAddressPM = new AddressBuilder(
                 "ManCountry",
@@ -67,7 +67,7 @@ public class Initializer {
                 fullAddressPM
         );
 
-        userService.add(testPropertyManager);
+        userServiceREST.add(testPropertyManager);
 
         AddressBuilder fullAddress0 = new AddressBuilder("Molvania", "Molvania City", "MO-2342", "111. Very Nice Street");
 
@@ -119,7 +119,7 @@ public class Initializer {
                 fullAddressGuest
         );
 
-        userService.add(guestUser);
+        userServiceREST.add(guestUser);
 
     }
 
