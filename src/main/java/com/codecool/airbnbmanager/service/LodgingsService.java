@@ -1,10 +1,10 @@
 package com.codecool.airbnbmanager.service;
 
 import com.codecool.airbnbmanager.model.Lodgings;
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.codecool.airbnbmanager.service.api.ToDoServiceREST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,27 @@ import java.util.List;
 @Service
 public class LodgingsService {
 
-    private final LodgingsRepository lodgingsRepository;
+    @Autowired
+    private LodgingsRepository lodgingsRepository;
 
     @Autowired
-    public LodgingsService(LodgingsRepository lodgingsRepository) {
-        this.lodgingsRepository = lodgingsRepository;
-    }
+    private ToDoServiceREST toDoServiceREST;
 
-    public void add(Lodgings lodgings) {
+
+    public void handleLodgingsAddition(Lodgings lodgings) {
         lodgingsRepository.save(lodgings);
     }
 
     public List<Lodgings> findAllLodgingsByUser(User user) {// todo: handles only landlords
         return lodgingsRepository.findAllByLandlord(user);
+    }
+
+    public boolean handleAddTodoToLodgings(Lodgings lodgings, ToDo toDo) {
+        if (lodgingsRepository.findById(lodgings.getId()).isPresent()) {
+            toDo.setLodgings(lodgings);
+            toDoServiceREST.handleToDoSaving(toDo);
+            return true;
+        }
+        return false;
     }
 }

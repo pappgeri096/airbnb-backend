@@ -33,7 +33,7 @@ public class Initializer {
 
     // initialize model objects for testing todo: dele later
 
-    public void init() throws ParseException {
+    private void init() throws ParseException {
         AddressBuilder fullAddressLL = new AddressBuilder(
                 "Country",
                 "City",
@@ -88,13 +88,15 @@ public class Initializer {
                 fullAddress0
         );
 
-        lodgingsService.add(newLodging);
+        lodgingsService.handleLodgingsAddition(newLodging);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate1 = "2018-11-30";
         Date date1 = formatter.parse(stringDate1);
         ToDo toDo1 = new ToDo("New chairs", newLodging, date1, "Buy new chairs for kitchen in IKEA", 30_000L);
         newLodging.addTodo(toDo1);
+
+        lodgingsService.handleAddTodoToLodgings(newLodging, toDo1);
 
         AddressBuilder fullAddress = new AddressBuilder("Vanuatu", "Big City", "VAU-2342", "111. dfdfce Street");
 
@@ -110,12 +112,12 @@ public class Initializer {
                 fullAddress
         );
 
-        lodgingsService.add(newLodging2);
+        lodgingsService.handleLodgingsAddition(newLodging2);
 
         Date date2 = formatter.parse("2018-11-26");
 
         ToDo todo2 = new ToDo("Pay bills", newLodging2, date2, "Electricity and gas", 15_683L);
-        newLodging2.addTodo(todo2);
+        lodgingsService.handleAddTodoToLodgings(newLodging2, todo2);
 
         AddressBuilder fullAddressGuest = new AddressBuilder(
                 "Country",

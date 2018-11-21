@@ -3,19 +3,22 @@ package com.codecool.airbnbmanager.service.api;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
+import com.codecool.airbnbmanager.repository.ToDoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class ToDoService {
+@Service
+public class ToDoServiceREST {
 
-//    private final ToDoDao toDoDao;
-//    private final BaseService<User> userHandler;
-//
-//    public ToDoService(ToDoDao toDoDao, BaseService<User> userHandler) {
-//        this.toDoDao = toDoDao;
-//        this.userHandler = userHandler;
-//    }
-//
+    @Autowired
+    ToDoRepository toDoRepository;
+
+
+    public void handleToDoSaving(ToDo toDo) {
+        toDoRepository.save(toDo);
+    }
 //    @Override
 //    public void handleAddPost(ToDo toDo) {
 //        this.toDoDao.add(toDo);

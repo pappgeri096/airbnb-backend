@@ -25,9 +25,9 @@ public class ToDoController extends HttpServlet {
 //    private final String servletName;
 //    private final BaseService<User> userService;
 //    private final LodgingsService lodgingsService;
-//    private final ToDoService toDoService;
+//    private final ToDoServiceREST toDoService;
 //
-//    public ToDoController(String servletName, BaseService<User> userService, LodgingsService lodgingsService, ToDoService toDoService) {
+//    public ToDoController(String servletName, BaseService<User> userService, LodgingsService lodgingsService, ToDoServiceREST toDoService) {
 //        this.servletName = servletName;
 //        this.userService = userService;
 //        this.lodgingsService = lodgingsService;
