@@ -1,6 +1,6 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.service.api.LodgingsServiceREST;
+import com.codecool.airbnbmanager.service.LodgingsServiceREST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
