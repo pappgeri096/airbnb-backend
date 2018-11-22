@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.model;
 
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -152,10 +153,12 @@ public abstract class User {
         this.landlordLodgings = landlordLodgings;
     }
 
+    @JsonIgnore
     public String getFullName() {
         return getFirstName() + " " + getSurname();
     }
 
+    @JsonIgnore
     public AddressBuilder getFullAddress() {
         return fullAddress;
     }

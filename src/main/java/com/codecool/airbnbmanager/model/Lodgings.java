@@ -2,6 +2,7 @@ package com.codecool.airbnbmanager.model;
 
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.util.LodgingsType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,9 +26,11 @@ public class Lodgings {
     @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ToDo> todos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     private User landlord;
 
+    @JsonIgnore
     @ManyToOne
     private User propertyManager;
 
