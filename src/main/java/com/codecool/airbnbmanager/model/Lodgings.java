@@ -1,7 +1,7 @@
 package com.codecool.airbnbmanager.model;
 
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
-import com.codecool.airbnbmanager.util.LodgingsType;
+import com.codecool.airbnbmanager.util.enums.LodgingsType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

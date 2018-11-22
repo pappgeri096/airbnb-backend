@@ -1,18 +1,18 @@
-package com.codecool.airbnbmanager.service.api;
+package com.codecool.airbnbmanager.service;
 
 import ch.qos.logback.classic.Logger;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.repository.UserRepository;
 import com.codecool.airbnbmanager.util.*;
+import com.codecool.airbnbmanager.util.enums.UserFieldType;
+import com.codecool.airbnbmanager.util.enums.UserType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,10 +25,6 @@ public class UserServiceREST {
 
     @Autowired
     private UserRepository userRepository;
-
-    private User handleFindUserById(String id) {
-        return userRepository.findById(Long.parseLong(id)).orElse(null);
-    }
 
     private User handleFindUserByEmail(String userEmail) {
         return userRepository.findUserByEmail(userEmail);
@@ -75,13 +71,8 @@ public class UserServiceREST {
 
         boolean isUpdateSuccessful = false;
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(userData);
+        if (map.isEmpty()) {
             return isUpdateSuccessful;
         }
 
@@ -114,40 +105,24 @@ public class UserServiceREST {
         return isUpdateSuccessful;
     }
 
-    public boolean handleUserDeletionBy(String userData) {
+    public boolean handleUserDeletionBy(Long id) {
 
-        boolean isDeletionSuccessful = false;
+        User user = userRepository.findById(id).orElse(null);
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
-            return isDeletionSuccessful;
+        if (user == null) {
+            return false;
         }
-
-        User user = handleFindUserById(map.get(UserFieldType.ID.getInputString()));
-
-        if (user != null) {
-            userRepository.delete(user);
-            isDeletionSuccessful = true;
-        }
-        return isDeletionSuccessful;
+        userRepository.delete(user);
+        return true;
     }
 
     public boolean handleUserAddition(String userData) {
 
         boolean isAdditionSuccessful = false;
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = JsonMappingHandler.convertJsonArraytoMap(userData);
-        } catch (IOException e) {
-            map.put("data", "User not found");
-            LOGGER.error("Could not create lodgings list with user data {}", e.toString());
-            e.printStackTrace();
+        Map<String, String> map = JsonMappingHandler.convertJsonArraytoMap(userData);
+
+        if (map.isEmpty()) {
             return isAdditionSuccessful;
         }
 
