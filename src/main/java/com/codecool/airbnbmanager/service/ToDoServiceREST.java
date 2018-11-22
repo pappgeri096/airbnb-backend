@@ -130,4 +130,7 @@ public class ToDoServiceREST {
         return true;
     }
 
+    public List<ToDo> getAllToDos() {
+        return toDoRepository.findAll();
+    }
 }

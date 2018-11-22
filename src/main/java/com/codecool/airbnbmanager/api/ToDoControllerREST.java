@@ -1,22 +1,32 @@
 package com.codecool.airbnbmanager.api;
 
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.service.ToDoServiceREST;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServlet;
 
+import java.util.List;
+
 import static com.codecool.airbnbmanager.configuration.Initializer.FAIL_MESSAGE;
 import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSAGE;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class ToDoControllerREST extends HttpServlet {
 
     @Autowired
     private ToDoServiceREST toDoService;
 
+    @GetMapping(path = "/api/todos")
+    public List<ToDo> toDoViewAll() {
+        return toDoService.getAllToDos();
+    }
+
+
     @GetMapping(path = "/api/all-todos-by-lodgings-id/{id}")
-    public String toDoViewAll(@PathVariable(name = "id") Long id) {
+    public String toDoViewAllByLodgings(@PathVariable(name = "id") Long id) {
         return toDoService.getAllToDosByLodgingsId(id);
     }
 
