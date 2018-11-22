@@ -16,6 +16,7 @@ import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSA
 
 // todo: session!!!!!!!!!!
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserControllerREST {
 
