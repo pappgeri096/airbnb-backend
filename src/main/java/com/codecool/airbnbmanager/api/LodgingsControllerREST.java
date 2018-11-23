@@ -9,12 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class LodgingsControllerREST {
 
     @Autowired
     LodgingsServiceREST lodgingsServiceREST;
 
     private List<String> fieldsToExclude = new ArrayList<>();
+
+    @GetMapping(value = "/api/lodgings2") //just for demo
+    public String lodgingsListDemo() {
+        return lodgingsServiceREST.listAllLodgingsByUser("akincsei@gmail.com");
+    }
 
     @GetMapping(value = "/api/lodgings") //todo: session attribute real key!!!
     public String lodgingsList(@SessionAttribute("landlord") String userEmail) {
