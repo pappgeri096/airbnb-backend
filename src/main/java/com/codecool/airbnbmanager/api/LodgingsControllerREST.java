@@ -4,6 +4,7 @@ import com.codecool.airbnbmanager.service.LodgingsServiceREST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,21 @@ public class LodgingsControllerREST {
 
     private List<String> fieldsToExclude = new ArrayList<>();
 
+    @PostMapping(value = "/api/login")
+    public String login(@RequestParam String email, @RequestParam String passw, HttpSession session) {
+        // kikeresem a DBbol
+        session.setAttribute("userId", "dsgfdfdg");
+        return null;
+    }
+
     @GetMapping(value = "/api/lodgings2") //just for demo
     public String lodgingsListDemo() {
         return lodgingsServiceREST.listAllLodgingsByUser("akincsei@gmail.com");
     }
 
     @GetMapping(value = "/api/lodgings") //todo: session attribute real key!!!
-    public String lodgingsList(@SessionAttribute("landlord") String userEmail) {
+    public String lodgingsList(@SessionAttribute("landlord") String userEmail, HttpSession session) {
+        String email = (String) session.getAttribute("emailAddress");
         return lodgingsServiceREST.listAllLodgingsByUser(userEmail);
     }
 
