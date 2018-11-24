@@ -133,4 +133,10 @@ public class ToDoServiceREST {
     public List<ToDo> getAllToDos() {
         return toDoRepository.findAll();
     }
+
+    public ToDo handleAddTodoAutomatically(ToDo body) {
+        toDoRepository.save(body);
+        Long idMax = toDoRepository.findMaximumIdInToDoTable();
+        return toDoRepository.findById(idMax).orElse(null);
+    }
 }

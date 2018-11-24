@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.model.ToDo;
+import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.ToDoServiceREST;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,9 @@ public class ToDoControllerREST extends HttpServlet {
 
     }
 
-    @PostMapping(path = "/api/todo/add")
+    @PostMapping(path = "/api/todo/add")  // , consumes = "application/json", produces = "application/json"
     public String toDoAddition(@RequestBody String body) {
         boolean isAdditionSuccessful = toDoService.handleToDoAddition(body);
         return (isAdditionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
-
     }
 }

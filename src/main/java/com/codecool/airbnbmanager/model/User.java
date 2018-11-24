@@ -22,6 +22,8 @@ public abstract class User {
     private String surname;
     private String email;
     private String phoneNumber;
+
+    @JsonIgnore
     private String passwordHash;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
@@ -57,6 +59,7 @@ public abstract class User {
         return id;
     }
 
+    @JsonIgnore
     public void setId(int id) {
         this.id = id;
     }

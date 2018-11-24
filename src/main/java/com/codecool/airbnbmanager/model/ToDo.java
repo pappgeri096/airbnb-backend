@@ -100,4 +100,17 @@ public class ToDo {
     public void setObsolete(boolean obsolete) {
         this.obsolete = obsolete;
     }
+
+    @Override
+    public String toString() {
+        return "ToDo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", deadline=" + deadline +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", status=" + status +
+                ", obsolete=" + obsolete +
+                '}';
+    }
 }

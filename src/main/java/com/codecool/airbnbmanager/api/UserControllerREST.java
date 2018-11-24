@@ -1,5 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
+import com.codecool.airbnbmanager.model.Landlord;
+import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.UserServiceREST;
 import com.codecool.airbnbmanager.util.enums.UserFieldType;
 
@@ -52,7 +54,6 @@ public class UserControllerREST {
 
     @PostMapping(path = "/api/user/add")
     public String userAddPost(@RequestBody String body) {
-
         boolean isAdditionSuccessFul = userServiceREST.handleUserAddition(body);
         return (isAdditionSuccessFul) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
     }
