@@ -164,4 +164,9 @@ public class UserServiceREST {
     }
 
 
+    public User handleUserAdditionAutomatically(User user) {
+        userRepository.save(user);
+        String emailAddress = user.getEmail();
+        return userRepository.findUserByEmail(emailAddress);
+    }
 }

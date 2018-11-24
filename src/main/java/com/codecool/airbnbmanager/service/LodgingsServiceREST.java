@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.service;
 
 import com.codecool.airbnbmanager.model.Lodgings;
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
@@ -143,5 +144,19 @@ public class LodgingsServiceREST {
 
     Lodgings handleFindById(Long id) {
         return lodgingsRepository.findById(id).orElse(null);
+    }
+
+    public Lodgings handleAddTodoToLodgings(Long id, ToDo newToDo) {
+
+        Lodgings lodgings = lodgingsRepository.findById(id).orElse(null);
+
+        if (lodgings != null) {
+            lodgings.addTodo(newToDo);
+        }
+
+        lodgingsRepository.save(lodgings);
+
+        return lodgingsRepository.findById(id).orElse(null);
+
     }
 }
