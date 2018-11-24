@@ -69,7 +69,7 @@ public class LodgingsControllerREST {
 
     @PostMapping(path = "/api/lodgings-add-todo/{id}", consumes = "application/json", produces = "application/json")
     public Lodgings addToDoToLodgings(@PathVariable(name = "id") Long id, @RequestBody ToDo body) {
-        return lodgingsServiceREST.handleAddTodoToLodgings(id, body);
+        return lodgingsServiceREST.handleAddTodoToLodgings(id, body); // todo: use ResponseEntity<>
     }
 
 }
