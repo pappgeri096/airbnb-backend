@@ -15,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", unique = true)
     private long id;
+    private String username;
     private String firstName;
     private String surname;
     private String email;
@@ -43,6 +44,7 @@ public class User {
     }
 
     public User(
+            String username,
             String firstName,
             String surname,
             String email,
@@ -50,6 +52,7 @@ public class User {
             String passwordHash,
             AddressBuilder fullAddress
     ) {
+        this.username = username;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;

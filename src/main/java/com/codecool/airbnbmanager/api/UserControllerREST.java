@@ -7,17 +7,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@RequestMapping("/api/user")
 public class UserControllerREST {
 
     @Autowired
     private UserServiceREST userServiceREST;
 
-    @GetMapping(path = {"/api/user", "/api/user/edit"})
-    public User userView() {
-        return new User();
+    @GetMapping(path = {"/{username}"})
+    public User userView(@PathVariable("username") String username) {
+        return userServiceREST.getUserByUsername(username);
     }
 
     @PutMapping(path = "/api/user/edit", consumes = "text/plain")

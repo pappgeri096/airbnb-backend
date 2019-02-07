@@ -31,6 +31,9 @@ public class UserServiceREST {
     }
 
 
+    public User getUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
+    }
 
     public String createJsonStringByAndIncluding(String userEmail, List<String> fieldsToInclude) {
 
