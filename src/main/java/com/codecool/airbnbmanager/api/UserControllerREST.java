@@ -1,7 +1,5 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.model.Landlord;
-import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.UserServiceREST;
 import com.codecool.airbnbmanager.util.enums.UserFieldType;
 

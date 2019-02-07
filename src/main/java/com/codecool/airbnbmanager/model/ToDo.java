@@ -24,6 +24,7 @@ public class ToDo {
     @Column(name = "Status")
     @Enumerated(EnumType.STRING)
     private ToDoStatusType status = ToDoStatusType.NEW;
+    @JsonIgnore
     private boolean obsolete = false;
 
     public ToDo() {

@@ -1,8 +1,5 @@
 package com.codecool.airbnbmanager.util;
 
-import com.codecool.airbnbmanager.model.Landlord;
-import com.codecool.airbnbmanager.model.PropertyManager;
-import com.codecool.airbnbmanager.model.Tenant;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.codecool.airbnbmanager.util.enums.UserType;
