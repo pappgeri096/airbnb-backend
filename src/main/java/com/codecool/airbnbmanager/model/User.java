@@ -20,9 +20,8 @@ public class User {
     private String surname;
     private String email;
     private String phoneNumber;
+    private String password;
 
-    @JsonIgnore
-    private String passwordHash;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private AddressBuilder fullAddress;
@@ -49,16 +48,16 @@ public class User {
             String surname,
             String email,
             String phoneNumber,
-            String passwordHash,
-            AddressBuilder fullAddress
+            AddressBuilder fullAddress,
+            String password
     ) {
         this.username = username;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.passwordHash = passwordHash;
         this.fullAddress = fullAddress;
+        this.password = password;
     }
 
     public long getId() {
@@ -134,16 +133,8 @@ public class User {
         this.fullAddress.setAddress(address);
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public Set<Lodgings> getPropertyManagerLodgings() {
@@ -176,6 +167,30 @@ public class User {
         this.fullAddress = fullAddress;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -187,7 +202,10 @@ public class User {
                 ", city='" + getCity() + '\'' +
                 ", zipCode='" + getZipCode() + '\'' +
                 ", address='" + getAddress() + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return firstName+" "+surname;
     }
 }

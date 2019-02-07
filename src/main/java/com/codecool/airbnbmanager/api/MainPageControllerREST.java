@@ -31,7 +31,7 @@ public class MainPageControllerREST {
         fieldsToInclude.add(UserFieldType.FIRST_NAME.getInputString());
         fieldsToInclude.add(UserFieldType.LANDLORD_LODGINGS.getInputString());
 
-        return userServiceREST.createJsonStringByAndIncluding(userEmail, fieldsToInclude);
+        return "";
     }
 
 

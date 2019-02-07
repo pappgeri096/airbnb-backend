@@ -20,19 +20,4 @@ public class UserControllerREST {
         return userServiceREST.getUserByUsername(username);
     }
 
-    @PutMapping(path = "/api/user/edit", consumes = "text/plain")
-    public boolean postEditedUserData(@RequestBody String body) {
-        return userServiceREST.handleUserUpdate(body);
-    }
-
-
-    @DeleteMapping(path = "/api/user/delete/{id}")
-    public boolean userDeletion(@PathVariable(name = "id") Long id) {
-        return userServiceREST.handleUserDeletionBy(id);
-    }
-
-    @PostMapping(path = "/api/user/add")
-    public boolean userAddPost(@RequestBody String body) {
-        return userServiceREST.handleUserAddition(body);
-    }
 }
