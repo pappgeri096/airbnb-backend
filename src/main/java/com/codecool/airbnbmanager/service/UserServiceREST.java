@@ -35,4 +35,7 @@ public class UserServiceREST {
         return userRepository.findUserByUsername(username);
     }
 
+    public void add(User user) {
+        userRepository.save(user);
+    }
 }
