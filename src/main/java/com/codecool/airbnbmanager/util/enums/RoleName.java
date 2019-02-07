@@ -2,6 +2,6 @@ package com.codecool.airbnbmanager.util.enums;
 
 public enum  RoleName {
     ROLE_USER,
-    ROLE_PM,
-    ROLE_ADMIN
+    ROLE_PROPERTY,
+    ROLE_LANDLORD
 }

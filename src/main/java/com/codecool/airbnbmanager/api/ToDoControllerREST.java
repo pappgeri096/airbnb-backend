@@ -1,17 +1,12 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.model.ToDo;
-import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.ToDoServiceREST;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServlet;
-
 import java.util.List;
-
-import static com.codecool.airbnbmanager.configuration.Initializer.FAIL_MESSAGE;
-import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSAGE;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -37,21 +32,18 @@ public class ToDoControllerREST extends HttpServlet {
     }
 
     @PutMapping(path = "/api/todo/edit", consumes = "text/plain")
-    public String toDoEditPost(@RequestBody String body) {
-        boolean isUpdateSuccessful = toDoService.handleToDoUpdate(body);
-        return (isUpdateSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    public boolean toDoEditPost(@RequestBody String body) {
+        return toDoService.handleToDoUpdate(body);
     }
 
     @DeleteMapping(path = "/api/todo/delete/{id}")
-    public String todoDeletion(@PathVariable(name = "id") Long id) {
-        boolean isDeletionSuccessful = toDoService.handleToDoDeletionBy(id);
-        return (isDeletionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    public boolean todoDeletion(@PathVariable(name = "id") Long id) {
+        return toDoService.handleToDoDeletionBy(id);
 
     }
 
     @PostMapping(path = "/api/todo/add")  // , consumes = "application/json", produces = "application/json"
-    public String toDoAddition(@RequestBody String body) {
-        boolean isAdditionSuccessful = toDoService.handleToDoAddition(body);
-        return (isAdditionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    public boolean toDoAddition(@RequestBody String body) {
+        return toDoService.handleToDoAddition(body);
     }
 }

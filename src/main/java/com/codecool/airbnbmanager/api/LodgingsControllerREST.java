@@ -20,12 +20,6 @@ public class LodgingsControllerREST {
 
     private List<String> fieldsToExclude = new ArrayList<>();
 
-//    @PostMapping(value = "/api/login")
-//    public String login(@RequestParam String email, @RequestParam String passw, HttpSession session) {
-//        // kikeresem a DBbol
-//        session.setAttribute("userId", "dsgfdfdg");
-//        return null;
-//    }
 
     @GetMapping(value = "/api/lodgings2") //just for demo
     public String lodgingsListDemo() {
