@@ -17,17 +17,7 @@ public class UserFactory {
     ) {
         User requiredUser;
 
-        if (type == UserType.LANDLORD) {
-            requiredUser = new Landlord(firstName, surname, email, phoneNumber, passwordHash, fullAddress);
-        } else if (type == UserType.PROPERTY_MANAGER) {
-            requiredUser = new PropertyManager(firstName, surname, email, phoneNumber, passwordHash, fullAddress);
-        } else if (type == UserType.TENANT || type == UserType.GUEST) {
-            requiredUser = new Tenant(firstName, surname, email, phoneNumber, passwordHash, fullAddress);
-        } else {
-            //Todo: create logger here instead of sout
-            System.out.println("There is no such user type as " + type.toString());
-            requiredUser = null;
-        }
+        requiredUser = new User(firstName, surname, email, phoneNumber, passwordHash, fullAddress);
 
         return requiredUser;
     }

@@ -1,7 +1,7 @@
 package com.codecool.airbnbmanager.model;
 
 
-import com.codecool.airbnbmanager.util.RoleName;
+import com.codecool.airbnbmanager.util.enums.RoleName;
 
 import javax.persistence.*;
 
