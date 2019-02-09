@@ -1,10 +1,9 @@
 package com.codecool.airbnbmanager.message.request;
 
-import com.codecool.airbnbmanager.model.builder.AddressBuilder;
+import com.codecool.airbnbmanager.model.builder.Address;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class SignUpForm {
@@ -24,7 +23,7 @@ public class SignUpForm {
     @NotBlank
     private String phoneNumber;
 
-    private AddressBuilder addressBuilder;
+    private Address address;
     
     private Set<String> role;
 
@@ -71,12 +70,12 @@ public class SignUpForm {
         this.phoneNumber = phoneNumber;
     }
 
-    public AddressBuilder getAddressBuilder() {
-        return addressBuilder;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressBuilder(AddressBuilder addressBuilder) {
-        this.addressBuilder = addressBuilder;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Set<String> getRole() {

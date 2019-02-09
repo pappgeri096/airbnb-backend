@@ -1,6 +1,6 @@
 package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.builder.AddressBuilder;
+import com.codecool.airbnbmanager.model.builder.Address;
 import com.codecool.airbnbmanager.util.enums.LodgingsType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +35,7 @@ public class Lodgings {
     private User propertyManager;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private AddressBuilder fullAddress;
+    private Address fullAddress;
 
 
 //    @OneToMany(mappedBy = "tenantLodgings", fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class Lodgings {
     public Lodgings(
             String name, LodgingsType lodgingsType,
             long pricePerDay, long electricityBill, long gasBill, long telecommunicationBill, long cleaningCost,
-            User landlord, AddressBuilder fullAddress
+            User landlord, Address fullAddress
     ) {
         this.name = name;
         this.lodgingsType = lodgingsType;
@@ -62,7 +62,7 @@ public class Lodgings {
     public Lodgings(
             String name, LodgingsType lodgingsType,
             long pricePerDay, long electricityBill, long gasBill, long telecommunicationBill, long cleaningCost,
-            User landlord, User propertyManager, AddressBuilder fullAddress
+            User landlord, User propertyManager, Address fullAddress
     ) {
         this.name = name;
         this.lodgingsType = lodgingsType;

@@ -8,7 +8,7 @@ public class UserBuilder {
     private String surname;
     private String email;
     private String phoneNumber;
-    private AddressBuilder fullAddress;
+    private Address fullAddress;
     private String password;
 
     public UserBuilder setUsername(String username) {
@@ -36,7 +36,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setFullAddress(AddressBuilder fullAddress) {
+    public UserBuilder setFullAddress(Address fullAddress) {
         this.fullAddress = fullAddress;
         return this;
     }
