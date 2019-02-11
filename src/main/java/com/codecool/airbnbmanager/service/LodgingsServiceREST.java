@@ -3,7 +3,7 @@ package com.codecool.airbnbmanager.service;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.model.builder.AddressBuilder;
+import com.codecool.airbnbmanager.model.builder.Address;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.UserRepository;
 import com.codecool.airbnbmanager.util.JsonMappingHandler;
@@ -101,7 +101,7 @@ public class LodgingsServiceREST {
         String propertyManagerEmail = lodgingsDataMap.get(LodgingsFieldType.PROPERTY_MANAGER_LODGINGS.getInputString());
         User propertyManagerToAdd = userRepository.findUserByEmail(propertyManagerEmail);
 
-        AddressBuilder fullAddress = new AddressBuilder(
+        Address fullAddress = new Address(
                 lodgingsDataMap.get(LodgingsFieldType.COUNTRY.getInputString()),
                 lodgingsDataMap.get(LodgingsFieldType.CITY.getInputString()),
                 lodgingsDataMap.get(LodgingsFieldType.ZIP_CODE.getInputString()),

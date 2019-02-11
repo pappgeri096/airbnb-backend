@@ -1,30 +1,51 @@
 package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.builder.AddressBuilder;
+import com.codecool.airbnbmanager.model.builder.Address;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", unique = true)
     private long id;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
     private String username;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
     private String firstName;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
     private String surname;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 12)
     private String phoneNumber;
+
+    @NotBlank
     private String password;
 
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private AddressBuilder fullAddress;
+    private Address fullAddress;
 
     @OneToMany(mappedBy = "propertyManager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> propertyManagerLodgings = new HashSet<>();
@@ -48,7 +69,7 @@ public class User {
             String surname,
             String email,
             String phoneNumber,
-            AddressBuilder fullAddress,
+            Address fullAddress,
             String password
     ) {
         this.username = username;
@@ -159,11 +180,11 @@ public class User {
     }
 
     @JsonIgnore
-    public AddressBuilder getFullAddress() {
+    public Address getFullAddress() {
         return fullAddress;
     }
 
-    public void setFullAddress(AddressBuilder fullAddress) {
+    public void setFullAddress(Address fullAddress) {
         this.fullAddress = fullAddress;
     }
 
