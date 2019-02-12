@@ -14,7 +14,7 @@ import java.util.Set;
 public class Address {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -95,5 +95,13 @@ public class Address {
 
     public void setLodgings(Lodgings lodgings) {
         this.lodgings = lodgings;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

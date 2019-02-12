@@ -53,6 +53,9 @@ public class User {
     @OneToMany(mappedBy = "landlord", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> landlordLodgings = new HashSet<>();
 
+    @OneToMany(mappedBy = "tenants", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Lodgings> tenantLodgings = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -210,6 +213,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Lodgings> getTenantLodgings() {
+        return tenantLodgings;
+    }
+
+    public void setTenantLodgings(Set<Lodgings> tenantLodgings) {
+        this.tenantLodgings = tenantLodgings;
     }
 
     @Override
