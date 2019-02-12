@@ -2,10 +2,12 @@ package com.codecool.airbnbmanager.config;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.Role;
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.model.builder.Address;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.RoleRepository;
+import com.codecool.airbnbmanager.repository.ToDoRepository;
 import com.codecool.airbnbmanager.repository.UserRepository;
 import com.codecool.airbnbmanager.util.enums.LodgingsType;
 import com.codecool.airbnbmanager.util.enums.RoleName;
@@ -13,6 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,13 +26,17 @@ public class Init implements CommandLineRunner {
     private UserRepository userRepository;
 
     private LodgingsRepository lodgingsRepository;
+
     private RoleRepository roleRepository;
 
-    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository) {
+    private ToDoRepository toDoRepository;
+
+    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository, ToDoRepository toDoRepository) {
         this.encoder = encoder;
         this.userRepository = userRepository;
         this.lodgingsRepository = lodgingsRepository;
         this.roleRepository = roleRepository;
+        this.toDoRepository = toDoRepository;
     }
 
     @Override
@@ -62,5 +69,8 @@ public class Init implements CommandLineRunner {
         lodgings.setTenants(user);
         lodgings.setPropertyManager(user2);
         lodgingsRepository.save(lodgings);
+
+        ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
+        toDoRepository.save(toDo);
     }
 }
