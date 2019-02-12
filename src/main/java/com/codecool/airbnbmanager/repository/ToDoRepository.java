@@ -8,9 +8,5 @@ import java.util.List;
 
 public interface ToDoRepository extends JpaRepository<ToDo, Long> {
 
-    List<ToDo> findAllByLodgingsId(Long lodgingsId);
-
-    @Query(value = "SELECT coalesce(max(td.id), 0) FROM ToDo td")
-    Long findMaximumIdInToDoTable();
 
 }

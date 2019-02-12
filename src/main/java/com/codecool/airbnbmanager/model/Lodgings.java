@@ -34,13 +34,13 @@ public class Lodgings {
     @ManyToOne
     private User propertyManager;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Address fullAddress;
 
-
-//    @OneToMany(mappedBy = "tenantLodgings", fetch = FetchType.LAZY)
-//    private Set<User> tenants = new HashSet<>();
-//
+    @JsonIgnore
+    @ManyToOne
+    private User tenants;
 
     public Lodgings(
             String name, LodgingsType lodgingsType,
@@ -191,17 +191,7 @@ public class Lodgings {
         this.propertyManager = propertyManager;
     }
 
-//    public Set<User> getTenants() {
-//        return tenants;
-//    }
-//
-//    public void addTenant(Tenant tenant) {
-//        tenants.add(tenant);
-//    }
-//
-//    public void removeTenant(Tenant tenant) {
-//        tenants.remove(tenant);
-//    }
+
 
     public void addTodo(ToDo toDo){
         this.todos.add(toDo);
@@ -213,6 +203,22 @@ public class Lodgings {
 
     public void setTodos(Set<ToDo> todos) {
         this.todos = todos;
+    }
+
+    public Address getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(Address fullAddress) {
+        this.fullAddress = fullAddress;
+    }
+
+    public User getTenants() {
+        return tenants;
+    }
+
+    public void setTenants(User tenants) {
+        this.tenants = tenants;
     }
 
     @Override

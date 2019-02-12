@@ -9,13 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LodgingsRepository extends JpaRepository<Lodgings, Long> {
-
-    List<Lodgings> findAllByLandlord(User landlord);
-
-    Lodgings findLodgingsById(long id);
-
-    void deleteLodgingsById(long id);
-
-    List<Lodgings> findAllByPropertyManager(User propertyManager);
+    List<Lodgings> findByTenants(User user);
+    List<Lodgings> getByTenants(User user);
 
 }
