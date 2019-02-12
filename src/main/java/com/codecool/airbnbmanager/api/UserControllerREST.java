@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.model.Lodgings;
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.service.LodgingsServiceREST;
 import com.codecool.airbnbmanager.service.UserServiceREST;
@@ -33,8 +34,13 @@ public class UserControllerREST {
     @GetMapping("/{username}/lodgings")
     @PreAuthorize("hasRole('USER')")
     public Set<Lodgings> getLodgingsByUserName(@PathVariable("username") String username){
-        System.out.println();
         return userServiceREST.getUserLodgings(username);
+    }
+
+    @GetMapping("/{username}/todos")
+    @PreAuthorize("hasRole('USER')")
+    public Set<ToDo> getTodosByUserName(@PathVariable("username") String username){
+        return userServiceREST.getUserTodos(username);
     }
 
 }
