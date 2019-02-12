@@ -23,4 +23,7 @@ public class LodgingsServiceREST {
     @Autowired
     private LodgingsRepository lodgingsRepository;
 
+    public Lodgings getLodgingsById(long id) {
+        return lodgingsRepository.findById(id).get();
+    }
 }

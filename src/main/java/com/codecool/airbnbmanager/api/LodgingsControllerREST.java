@@ -11,14 +11,18 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/lodgings")
 public class LodgingsControllerREST {
 
     @Autowired
     LodgingsServiceREST lodgingsServiceREST;
 
-
+    @GetMapping("/{id}")
+    public Lodgings getLodgingsById(@PathVariable("id") long id){
+        return lodgingsServiceREST.getLodgingsById(id);
+    }
 
 
 }
