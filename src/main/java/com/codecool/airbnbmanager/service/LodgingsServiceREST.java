@@ -30,4 +30,8 @@ public class LodgingsServiceREST {
     public void addNewLodgings(Lodgings lodgings) {
         lodgingsRepository.save(lodgings);
     }
+
+    public void updateLodgings(Lodgings lodgings) {
+        lodgingsRepository.save(lodgings);
+    }
 }

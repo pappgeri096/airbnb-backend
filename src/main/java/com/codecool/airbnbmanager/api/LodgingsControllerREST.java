@@ -47,7 +47,18 @@ public class LodgingsControllerREST {
         User user = userServiceREST.getUserByUsername(username);
         lodgings.setLandlord(user);
         lodgingsServiceREST.addNewLodgings(lodgings);
-        return new ResponseEntity<>(new ResponseMessage("Lodgings added succesfully!"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Lodgings added successfully!"), HttpStatus.OK);
+    }
+
+    @PutMapping("/{username}/update")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public ResponseEntity<?> updateLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
+
+        System.out.println(lodgings.getLodgingsType());
+        User user = userServiceREST.getUserByUsername(username);
+        lodgings.setLandlord(user);
+        lodgingsServiceREST.updateLodgings(lodgings);
+        return new ResponseEntity<>(new ResponseMessage("Lodgings updated successfully!"), HttpStatus.OK);
     }
 
 }
