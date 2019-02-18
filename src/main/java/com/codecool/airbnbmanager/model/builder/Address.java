@@ -3,6 +3,7 @@ package com.codecool.airbnbmanager.model.builder;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,15 +20,19 @@ public class Address {
 
     @NotBlank
     @Size(min = 4)
+    @JsonProperty("country")
     private String country;
 
     @NotBlank
+    @JsonProperty("city")
     private String city;
 
     @NotBlank
+    @JsonProperty("zipCode")
     private String zipCode;
 
     @NotBlank
+    @JsonProperty("address")
     private String address;
 
     @JsonIgnore

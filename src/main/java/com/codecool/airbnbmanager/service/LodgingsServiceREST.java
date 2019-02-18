@@ -26,4 +26,8 @@ public class LodgingsServiceREST {
     public Lodgings getLodgingsById(long id) {
         return lodgingsRepository.findById(id).get();
     }
+
+    public void addNewLodgings(Lodgings lodgings) {
+        lodgingsRepository.save(lodgings);
+    }
 }
