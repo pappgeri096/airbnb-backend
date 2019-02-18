@@ -73,4 +73,17 @@ public class LodgingsControllerREST {
         return new ResponseEntity<>(new ResponseMessage("Lodgings updated successfully!"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasRole('LANDLORD')")
+    ResponseEntity<?> deleteLodgings(@PathVariable("id") long id ){
+        Lodgings lodgings = lodgingsServiceREST.getLodgingsById(id);
+        if(lodgings == null) {
+            return new ResponseEntity("NOT FOUND",
+                    HttpStatus.NOT_FOUND);
+        }
+
+        lodgingsServiceREST.deleteLodgings(id);
+        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
+    }
+
 }

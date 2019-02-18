@@ -34,4 +34,8 @@ public class LodgingsServiceREST {
     public void updateLodgings(Lodgings lodgings) {
         lodgingsRepository.save(lodgings);
     }
+
+    public void deleteLodgings(long id) {
+        lodgingsRepository.deleteById(id);
+    }
 }
