@@ -52,17 +52,22 @@ public class Init implements CommandLineRunner {
                 address3,
                 encoder.encode("12345678"));
         Set<Role> roles = new HashSet<>();
+        Set<Role> roles2 = new HashSet<>();
 
         roleRepository.save(new Role(RoleName.ROLE_USER));
         roleRepository.save(new Role(RoleName.ROLE_PROPERTY));
         roleRepository.save(new Role(RoleName.ROLE_LANDLORD));
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+        Role userRole = roleRepository.findByName(RoleName.ROLE_LANDLORD)
                 .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-        roles.add(userRole);
+
+        Role landlordRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+        roles.add(landlordRole);
+        roles2.add(userRole);
 
         user2.setRoles(roles);
-        user.setRoles(roles);
+        user.setRoles(roles2);
         userRepository.save(user);
         userRepository.save(user2);
 
