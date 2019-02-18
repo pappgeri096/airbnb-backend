@@ -11,5 +11,6 @@ import java.util.List;
 public interface LodgingsRepository extends JpaRepository<Lodgings, Long> {
     List<Lodgings> findByTenants(User user);
     List<Lodgings> getByTenants(User user);
+    boolean deleteById(long id);
 
 }
