@@ -2,7 +2,9 @@ package com.codecool.airbnbmanager.model;
 
 import com.codecool.airbnbmanager.model.builder.Address;
 import com.codecool.airbnbmanager.util.enums.LodgingsType;
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ public class Lodgings {
     private long id;
     private String name;
     @Enumerated(value = EnumType.STRING)
+    @JsonProperty()
     private LodgingsType lodgingsType;
 
     private long pricePerDay;
@@ -34,7 +37,7 @@ public class Lodgings {
     @ManyToOne
     private User propertyManager;
 
-    @JsonIgnore
+
     @OneToOne(cascade = CascadeType.ALL)
     private Address fullAddress;
 
@@ -57,6 +60,23 @@ public class Lodgings {
         this.landlord = landlord;
         this.fullAddress = fullAddress;
     }
+
+    public Lodgings(
+            String name, LodgingsType lodgingsType,
+            long pricePerDay, long electricityBill, long gasBill, long telecommunicationBill, long cleaningCost,
+            Address fullAddress
+    ) {
+        this.name = name;
+        this.lodgingsType = lodgingsType;
+        this.pricePerDay = pricePerDay;
+        this.electricityBill = electricityBill;
+        this.gasBill = gasBill;
+        this.telecommunicationBill = telecommunicationBill;
+        this.cleaningCost = cleaningCost;
+        this.fullAddress = fullAddress;
+    }
+
+
 
 
     public Lodgings(
@@ -103,38 +123,6 @@ public class Lodgings {
         this.lodgingsType = lodgingsType;
     }
 
-    public String getCountry() {
-        return fullAddress.getCountry();
-    }
-
-    public void setCountry(String country) {
-        this.fullAddress.setCountry(country);
-    }
-
-    public String getCity() {
-        return fullAddress.getCity();
-    }
-
-    public void setCity(String city) {
-        this.fullAddress.setCity(city);
-    }
-
-    public String getZipCode() {
-        return fullAddress.getZipCode();
-    }
-
-    public void setZipCode(String zipCode) {
-        this.fullAddress.setZipCode(zipCode);
-    }
-
-    public String getAddress() {
-        return fullAddress.getAddress();
-    }
-
-    public void setAddress(String address) {
-        this.fullAddress.setAddress(address);
-    }
-
     public long getPricePerDay() {
         return pricePerDay;
     }
@@ -175,6 +163,14 @@ public class Lodgings {
         this.cleaningCost = cleaningCost;
     }
 
+    public Set<ToDo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(Set<ToDo> todos) {
+        this.todos = todos;
+    }
+
     public User getLandlord() {
         return landlord;
     }
@@ -191,20 +187,6 @@ public class Lodgings {
         this.propertyManager = propertyManager;
     }
 
-
-
-    public void addTodo(ToDo toDo){
-        this.todos.add(toDo);
-    }
-
-    public Set<ToDo> getTodos() {
-        return todos;
-    }
-
-    public void setTodos(Set<ToDo> todos) {
-        this.todos = todos;
-    }
-
     public Address getFullAddress() {
         return fullAddress;
     }
@@ -219,25 +201,6 @@ public class Lodgings {
 
     public void setTenants(User tenants) {
         this.tenants = tenants;
-    }
-
-    @Override
-    public String toString() {
-        return "Lodgings{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lodgingsType=" + lodgingsType +
-                ", country='" + getCountry() + '\'' +
-                ", city='" + getCity() + '\'' +
-                ", zipCode='" + getZipCode() + '\'' +
-                ", address='" + getAddress() + '\'' +
-                ", pricePerDay=" + pricePerDay +
-                ", electricityBill=" + electricityBill +
-                ", gasBill=" + gasBill +
-                ", telecommunicationBill=" + telecommunicationBill +
-                ", cleaningCost=" + cleaningCost +
-                ", landlord=" + landlord.getFullName() +
-                '}';
     }
 }
 

@@ -54,6 +54,8 @@ public class Init implements CommandLineRunner {
         Set<Role> roles = new HashSet<>();
 
         roleRepository.save(new Role(RoleName.ROLE_USER));
+        roleRepository.save(new Role(RoleName.ROLE_PROPERTY));
+        roleRepository.save(new Role(RoleName.ROLE_LANDLORD));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
