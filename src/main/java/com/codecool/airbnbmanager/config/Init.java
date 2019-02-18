@@ -71,7 +71,7 @@ public class Init implements CommandLineRunner {
         userRepository.save(user);
         userRepository.save(user2);
 
-        Lodgings lodgings = new Lodgings("Paroka Hotel", LodgingsType.APARTMENT, 1000, 444, 555, 666, 6666, user2,
+        Lodgings lodgings = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user2,
                 address2);
         lodgings.setTenants(user);
         lodgings.setPropertyManager(user2);

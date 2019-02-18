@@ -47,7 +47,30 @@ public class LodgingsControllerREST {
         User user = userServiceREST.getUserByUsername(username);
         lodgings.setLandlord(user);
         lodgingsServiceREST.addNewLodgings(lodgings);
-        return new ResponseEntity<>(new ResponseMessage("Lodgings added succesfully!"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Lodgings added successfully!"), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/update")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public ResponseEntity<?> updateLodgings(@RequestBody Lodgings lodgings, @PathVariable("id") long id ){
+
+        Lodgings currentLodgings = lodgingsServiceREST.getLodgingsById(id);
+        if(currentLodgings == null){
+            return new ResponseEntity("NOT FOUND",
+                    HttpStatus.NOT_FOUND);
+        }
+
+        currentLodgings.setName(lodgings.getName());
+        currentLodgings.setLodgingsType(lodgings.getLodgingsType());
+        currentLodgings.setPricePerDay(lodgings.getPricePerDay());
+        currentLodgings.setElectricityBill(lodgings.getElectricityBill());
+        currentLodgings.setGasBill(lodgings.getGasBill());
+        currentLodgings.setTelecommunicationBill(lodgings.getTelecommunicationBill());
+        currentLodgings.setCleaningCost(lodgings.getCleaningCost());
+        currentLodgings.setFullAddress(lodgings.getFullAddress());
+
+        lodgingsServiceREST.updateLodgings(currentLodgings);
+        return new ResponseEntity<>(new ResponseMessage("Lodgings updated successfully!"), HttpStatus.OK);
     }
 
 }
