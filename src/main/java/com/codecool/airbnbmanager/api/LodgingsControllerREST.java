@@ -82,8 +82,8 @@ public class LodgingsControllerREST {
                     HttpStatus.NOT_FOUND);
         }
 
-        boolean result = lodgingsServiceREST.deleteLodgings(id);
-        return new ResponseEntity<>(new ResponseMessage(Boolean.toString(result)), HttpStatus.OK);
+        lodgingsServiceREST.deleteLodgings(id);
+        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
     }
 
 }

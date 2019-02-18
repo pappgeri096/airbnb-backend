@@ -35,7 +35,7 @@ public class LodgingsServiceREST {
         lodgingsRepository.save(lodgings);
     }
 
-    public boolean deleteLodgings(long id) {
-        return lodgingsRepository.deleteById(id);
+    public void deleteLodgings(long id) {
+        lodgingsRepository.deleteById(id);
     }
 }
