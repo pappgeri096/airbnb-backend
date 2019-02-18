@@ -32,7 +32,7 @@ public class UserControllerREST {
     }
 
     @GetMapping("/{username}/lodgings")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public Set<Lodgings> getLodgingsByUserName(@PathVariable("username") String username){
         return userServiceREST.getUserLodgings(username);
     }
