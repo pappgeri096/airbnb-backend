@@ -52,11 +52,10 @@ public class LodgingsControllerREST {
 
     @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasRole('LANDLORD')")
-    ResponseEntity<?> deleteLodgings(@PathVariable("id") long id ){
+    public ResponseEntity<?> deleteLodgings(@PathVariable("id") long id ){
         Lodgings lodgings = lodgingsServiceREST.getLodgingsById(id);
         if(lodgings == null) {
-            return new ResponseEntity("NOT FOUND",
-                    HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
         lodgingsServiceREST.deleteLodgings(id);

@@ -2,7 +2,6 @@ package com.codecool.airbnbmanager.service;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
-import com.codecool.airbnbmanager.util.JsonMappingHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

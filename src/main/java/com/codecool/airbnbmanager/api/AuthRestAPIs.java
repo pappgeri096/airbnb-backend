@@ -74,7 +74,7 @@ public class AuthRestAPIs {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		// Creating user's account
+
 		User user = new UserBuilder()
 				.setUsername(signUpRequest.getUsername())
 				.setFirstName(signUpRequest.getFirstname())
