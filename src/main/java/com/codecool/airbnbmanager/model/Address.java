@@ -1,4 +1,4 @@
-package com.codecool.airbnbmanager.model.builder;
+package com.codecool.airbnbmanager.model;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;

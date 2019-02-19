@@ -1,6 +1,6 @@
 package com.codecool.airbnbmanager.message.request;
 
-import com.codecool.airbnbmanager.model.builder.Address;
+import com.codecool.airbnbmanager.model.Address;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

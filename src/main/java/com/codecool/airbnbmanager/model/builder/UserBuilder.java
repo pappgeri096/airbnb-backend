@@ -1,5 +1,6 @@
 package com.codecool.airbnbmanager.model.builder;
 
+import com.codecool.airbnbmanager.model.Address;
 import com.codecool.airbnbmanager.model.User;
 
 public class UserBuilder {
