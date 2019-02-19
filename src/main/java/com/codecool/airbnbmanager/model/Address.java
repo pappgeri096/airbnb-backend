@@ -1,7 +1,5 @@
-package com.codecool.airbnbmanager.model.builder;
+package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.Lodgings;
-import com.codecool.airbnbmanager.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -41,7 +39,7 @@ public class Address {
 
     @JsonIgnore
     @OneToOne(mappedBy = "fullAddress", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    Lodgings lodgings;
+    private Lodgings lodgings;
 
 
     public Address() {
@@ -54,7 +52,7 @@ public class Address {
         this.address = address;
     }
 
-    public String getCountry() {
+    String getCountry() {
         return country;
     }
 

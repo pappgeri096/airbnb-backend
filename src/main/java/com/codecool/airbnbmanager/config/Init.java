@@ -4,7 +4,7 @@ import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.Role;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.model.builder.Address;
+import com.codecool.airbnbmanager.model.Address;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.RoleRepository;
 import com.codecool.airbnbmanager.repository.ToDoRepository;

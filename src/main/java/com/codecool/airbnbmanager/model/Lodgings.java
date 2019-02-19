@@ -1,8 +1,6 @@
 package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.builder.Address;
 import com.codecool.airbnbmanager.util.enums.LodgingsType;
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
