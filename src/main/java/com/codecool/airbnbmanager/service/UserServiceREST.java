@@ -7,6 +7,7 @@ import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -20,6 +21,8 @@ public class UserServiceREST {
 
     @Autowired
     private UserRepository userRepository;
+
+    private PasswordEncoder encoder;
 
     private LodgingsServiceREST lodgingsServiceREST;
 
@@ -49,5 +52,21 @@ public class UserServiceREST {
             toDos.addAll(l.getTodos());
         }
         return toDos;
+    }
+
+    public boolean updateUser(User user, String username) {
+        User currentUser = userRepository.findUserByUsername(username);
+        if(currentUser==null) return false;
+
+        if(user.getPassword()!=null) currentUser.setPassword(encoder.encode(user.getPassword()));
+
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setSurname(user.getSurname());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPhoneNumber(user.getPhoneNumber());
+        currentUser.setFullAddress(user.getFullAddress());
+
+        userRepository.save(currentUser);
+        return true;
     }
 }
