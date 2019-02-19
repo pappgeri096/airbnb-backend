@@ -31,8 +31,25 @@ public class LodgingsServiceREST {
         lodgingsRepository.save(lodgings);
     }
 
-    public void updateLodgings(Lodgings lodgings) {
-        lodgingsRepository.save(lodgings);
+    public boolean updateLodgings(Lodgings updatedLodgings, long lodgingsId) {
+
+
+        Lodgings currentLodgings = getLodgingsById(lodgingsId);
+
+        if(currentLodgings==null) return false;
+
+        currentLodgings.setName(updatedLodgings.getName());
+        currentLodgings.setLodgingsType(updatedLodgings.getLodgingsType());
+        currentLodgings.setPricePerDay(updatedLodgings.getPricePerDay());
+        currentLodgings.setElectricityBill(updatedLodgings.getElectricityBill());
+        currentLodgings.setGasBill(updatedLodgings.getGasBill());
+        currentLodgings.setTelecommunicationBill(updatedLodgings.getTelecommunicationBill());
+        currentLodgings.setCleaningCost(updatedLodgings.getCleaningCost());
+        currentLodgings.setFullAddress(updatedLodgings.getFullAddress());
+
+        lodgingsRepository.save(currentLodgings);
+
+        return true;
     }
 
     public void deleteLodgings(long id) {
