@@ -18,19 +18,15 @@ public class Address {
 
     @NotBlank
     @Size(min = 4)
-    @JsonProperty("country")
     private String country;
 
     @NotBlank
-    @JsonProperty("city")
     private String city;
 
     @NotBlank
-    @JsonProperty("zipCode")
     private String zipCode;
 
     @NotBlank
-    @JsonProperty("address")
     private String address;
 
     @JsonIgnore
@@ -52,7 +48,7 @@ public class Address {
         this.address = address;
     }
 
-    String getCountry() {
+    public String getCountry() {
         return country;
     }
 

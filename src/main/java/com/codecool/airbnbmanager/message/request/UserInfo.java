@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
-public class SignUpForm {
+public class UserInfo {
     @NotBlank
     private String username;
 

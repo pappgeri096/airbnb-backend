@@ -1,7 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.message.request.LoginForm;
-import com.codecool.airbnbmanager.message.request.SignUpForm;
+import com.codecool.airbnbmanager.message.request.UserInfo;
 import com.codecool.airbnbmanager.message.response.JwtResponse;
 import com.codecool.airbnbmanager.message.response.ResponseMessage;
 import com.codecool.airbnbmanager.model.Role;
@@ -61,7 +61,7 @@ public class AuthRestAPIs {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserInfo signUpRequest) {
 
 
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {

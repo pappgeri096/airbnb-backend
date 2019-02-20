@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.service;
 
 import ch.qos.logback.classic.Logger;
+import com.codecool.airbnbmanager.message.request.UserInfo;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
@@ -54,17 +55,28 @@ public class UserServiceREST {
         return toDos;
     }
 
-    public boolean updateUser(User user, String username) {
+    public boolean updateUser(UserInfo user, String username) {
         User currentUser = userRepository.findUserByUsername(username);
         if(currentUser==null) return false;
 
         if(user.getPassword()!=null) currentUser.setPassword(encoder.encode(user.getPassword()));
 
-        currentUser.setFirstName(user.getFirstName());
+        currentUser.setFirstName(user.getFirstname());
         currentUser.setSurname(user.getSurname());
         currentUser.setEmail(user.getEmail());
         currentUser.setPhoneNumber(user.getPhoneNumber());
-        currentUser.setFullAddress(user.getFullAddress());
+
+        currentUser.getFullAddress()
+                .setCountry(user.getAddress().getCountry());
+
+        currentUser.getFullAddress()
+                .setCity(user.getAddress().getCity());
+
+        currentUser.getFullAddress()
+                .setZipCode(user.getAddress().getZipCode());
+
+        currentUser.getFullAddress()
+                .setAddress(user.getAddress().getAddress());
 
         userRepository.save(currentUser);
         return true;
