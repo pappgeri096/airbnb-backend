@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -50,6 +49,15 @@ public class UserControllerREST {
         }
 
         return new ResponseEntity<>(new ResponseMessage("User updated successfully!"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{username}/delete")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<?> deleteUser(@PathVariable("username") String username) {
+        if(!userServiceREST.deleteUser(username)){
+            return new ResponseEntity(HttpStatus.METHOD_FAILURE);
+        }
+        return new ResponseEntity<>(new ResponseMessage("User deleted successfully!"), HttpStatus.OK);
     }
 
 }

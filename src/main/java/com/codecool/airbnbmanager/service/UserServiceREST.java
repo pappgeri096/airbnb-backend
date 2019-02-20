@@ -81,4 +81,12 @@ public class UserServiceREST {
         userRepository.save(currentUser);
         return true;
     }
+
+    public boolean deleteUser(String username) {
+        User user = userRepository.findUserByUsername(username);
+        if(user==null) return false;
+
+        userRepository.delete(user);
+        return true;
+    }
 }
