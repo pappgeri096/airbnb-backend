@@ -28,4 +28,16 @@ public class ToDoControllerREST {
         return new ResponseEntity<>(new ResponseMessage("ADDED"), HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<?> addNewTodo(@PathVariable("id") long id){
+
+        if(!toDoService.deleteTodo(id)){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
+
+    }
 }
