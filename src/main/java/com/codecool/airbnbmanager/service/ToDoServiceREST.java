@@ -26,4 +26,12 @@ public class ToDoServiceREST {
         return true;
 
     }
+
+    public boolean deleteTodo(long id) {
+        ToDo toDo = toDoRepository.findById(id);
+        if(toDo==null) return false;
+
+        toDoRepository.delete(toDo);
+        return true;
+    }
 }
