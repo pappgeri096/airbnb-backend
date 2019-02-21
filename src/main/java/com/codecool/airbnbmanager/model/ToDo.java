@@ -38,6 +38,13 @@ public class ToDo {
         this.price = price;
     }
 
+    public ToDo(String name, Date deadline, String description, long price) {
+        this.name = name;
+        this.deadline = deadline;
+        this.description = description;
+        this.price = price;
+    }
+
     public long getId() {
         return id;
     }
