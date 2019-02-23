@@ -2,6 +2,7 @@ package com.codecool.airbnbmanager.service;
 
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,11 @@ public class ToDoServiceREST {
     ToDoRepository toDoRepository;
 
     @Autowired
-    LodgingsServiceREST lodgingsServiceREST;
+    LodgingsRepository lodgingsRepository;
 
 
     public boolean addNewTodo(long lodgingsId, ToDo todo) {
-        Lodgings lodgings = lodgingsServiceREST.getLodgingsById(lodgingsId);
+        Lodgings lodgings = lodgingsRepository.findById(lodgingsId).orElse(null);
         if(lodgings==null) return false;
         todo.setLodgings(lodgings);
 
