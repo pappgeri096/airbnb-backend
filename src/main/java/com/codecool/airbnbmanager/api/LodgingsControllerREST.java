@@ -28,7 +28,7 @@ public class LodgingsControllerREST {
         return lodgingsServiceREST.getLodgingsById(id);
     }
 
-    @PostMapping("/{username}/add")
+    @PostMapping("/{username}")
     @PreAuthorize("hasRole('LANDLORD')")
     public ResponseEntity<?> addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
@@ -39,7 +39,7 @@ public class LodgingsControllerREST {
         return new ResponseEntity<>(new ResponseMessage("Lodgings added successfully!"), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
     public ResponseEntity<?> updateLodgings(@RequestBody Lodgings lodgings, @PathVariable("id") long id ){
 
@@ -50,7 +50,7 @@ public class LodgingsControllerREST {
         return new ResponseEntity<>(new ResponseMessage("Lodgings updated successfully!"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
     public ResponseEntity<?> deleteLodgings(@PathVariable("id") long id ){
         Lodgings lodgings = lodgingsServiceREST.getLodgingsById(id);
