@@ -1,15 +1,18 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.message.response.ResponseMessage;
+import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.service.LodgingsServiceREST;
-import com.codecool.airbnbmanager.service.UserServiceREST;
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import com.codecool.airbnbmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -17,49 +20,59 @@ import org.springframework.web.bind.annotation.*;
 public class LodgingsControllerREST {
 
     @Autowired
-    LodgingsServiceREST lodgingsServiceREST;
+    LodgingsRepository lodgingsRepository;
 
     @Autowired
-    UserServiceREST userServiceREST;
+    UserRepository userRepository;
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
-    public Lodgings getLodgingsById(@PathVariable("id") long id){
-        return lodgingsServiceREST.getLodgingsById(id);
+    public ResponseEntity<Lodgings> getLodgingsById(@PathVariable("id") long id){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+
+        return ResponseEntity.ok().body(lodgings);
     }
 
-    @PostMapping("/{username}/add")
+    @PostMapping("/{username}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<?> addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
+    public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
-        System.out.println(lodgings.getLodgingsType());
-        User user = userServiceREST.getUserByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
         lodgings.setLandlord(user);
-        lodgingsServiceREST.addNewLodgings(lodgings);
-        return new ResponseEntity<>(new ResponseMessage("Lodgings added successfully!"), HttpStatus.OK);
+        return lodgingsRepository.save(lodgings);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<?> updateLodgings(@RequestBody Lodgings lodgings, @PathVariable("id") long id ){
+    public ResponseEntity<Lodgings> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+        Lodgings currentLodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
 
-        if(!lodgingsServiceREST.updateLodgings(lodgings, id)){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        currentLodgings.setName(updatedLodgings.getName());
+        currentLodgings.setLodgingsType(updatedLodgings.getLodgingsType());
+        currentLodgings.setPricePerDay(updatedLodgings.getPricePerDay());
+        currentLodgings.setElectricityBill(updatedLodgings.getElectricityBill());
+        currentLodgings.setGasBill(updatedLodgings.getGasBill());
+        currentLodgings.setTelecommunicationBill(updatedLodgings.getTelecommunicationBill());
+        currentLodgings.setCleaningCost(updatedLodgings.getCleaningCost());
+        currentLodgings.setFullAddress(updatedLodgings.getFullAddress());
 
-        return new ResponseEntity<>(new ResponseMessage("Lodgings updated successfully!"), HttpStatus.OK);
+        Lodgings lodgings = lodgingsRepository.save(currentLodgings);
+
+        return ResponseEntity.ok(lodgings);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<?> deleteLodgings(@PathVariable("id") long id ){
-        Lodgings lodgings = lodgingsServiceREST.getLodgingsById(id);
-        if(lodgings == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        lodgingsServiceREST.deleteLodgings(id);
-        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
+    public Map<String, Boolean> deleteLodgings(@PathVariable("id") long id ){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+        lodgingsRepository.delete(lodgings);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 
 }

@@ -1,13 +1,16 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.message.response.ResponseMessage;
+import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
+import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
-import com.codecool.airbnbmanager.service.ToDoServiceREST;
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import com.codecool.airbnbmanager.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -15,29 +18,29 @@ import org.springframework.web.bind.annotation.*;
 public class ToDoControllerREST {
 
     @Autowired
-    private ToDoServiceREST toDoService;
+    private ToDoRepository toDoRepository;
 
-    @PostMapping("/{lodgingsId}/add")
+    @Autowired
+    private LodgingsRepository lodgingsRepository;
+
+    @PostMapping("/{lodgingsId}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public ResponseEntity<?> addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
-
-        if(!toDoService.addNewTodo(lodgingsId, toDo)){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseMessage("ADDED"), HttpStatus.OK);
+    public ToDo addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
+        Lodgings lodgings = lodgingsRepository.findById(lodgingsId)
+                .orElseThrow(() -> new LodgingsNotFoundException(lodgingsId));
+        toDo.setLodgings(lodgings);
+        return toDoRepository.save(toDo);
 
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public ResponseEntity<?> addNewTodo(@PathVariable("id") long id){
-
-        if(!toDoService.deleteTodo(id)){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
+    public Map<String, Boolean> addNewTodo(@PathVariable("id") long id){
+        ToDo toDo = toDoRepository.findById(id).orElse(null);
+        toDoRepository.delete(toDo);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
 
     }
 }
