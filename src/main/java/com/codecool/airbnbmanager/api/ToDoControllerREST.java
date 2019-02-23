@@ -17,7 +17,7 @@ public class ToDoControllerREST {
     @Autowired
     private ToDoServiceREST toDoService;
 
-    @PostMapping("/{lodgingsId}/add")
+    @PostMapping("/{lodgingsId}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public ResponseEntity<?> addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
 
@@ -29,7 +29,7 @@ public class ToDoControllerREST {
 
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public ResponseEntity<?> addNewTodo(@PathVariable("id") long id){
 
