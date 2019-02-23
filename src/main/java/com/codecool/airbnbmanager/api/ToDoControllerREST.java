@@ -1,14 +1,10 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.message.response.ResponseMessage;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.ToDoRepository;
-import com.codecool.airbnbmanager.service.ToDoServiceREST;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
