@@ -46,7 +46,7 @@ public class LodgingsControllerREST {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<Lodgings> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+    public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 
@@ -59,9 +59,9 @@ public class LodgingsControllerREST {
         currentLodgings.setCleaningCost(updatedLodgings.getCleaningCost());
         currentLodgings.setFullAddress(updatedLodgings.getFullAddress());
 
-        Lodgings lodgings = lodgingsRepository.save(currentLodgings);
+        lodgingsRepository.save(currentLodgings);
 
-        return ResponseEntity.ok(lodgings);
+        return ResponseEntity.ok(Boolean.TRUE);
     }
 
     @DeleteMapping("/{id}")

@@ -1,11 +1,13 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
+import com.codecool.airbnbmanager.exceptions.ToDoNotFoundException;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
 import com.codecool.airbnbmanager.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +37,10 @@ public class ToDoControllerREST {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public Map<String, Boolean> addNewTodo(@PathVariable("id") long id){
-        ToDo toDo = toDoRepository.findById(id).orElse(null);
+    public ResponseEntity<Boolean> addNewTodo(@PathVariable("id") long id){
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(() -> new ToDoNotFoundException(id));
         toDoRepository.delete(toDo);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 }
