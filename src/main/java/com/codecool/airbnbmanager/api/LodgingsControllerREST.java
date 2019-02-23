@@ -11,9 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/lodgings")
@@ -46,7 +43,7 @@ public class LodgingsControllerREST {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<Lodgings> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+    public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 
@@ -59,20 +56,18 @@ public class LodgingsControllerREST {
         currentLodgings.setCleaningCost(updatedLodgings.getCleaningCost());
         currentLodgings.setFullAddress(updatedLodgings.getFullAddress());
 
-        Lodgings lodgings = lodgingsRepository.save(currentLodgings);
+        lodgingsRepository.save(currentLodgings);
 
-        return ResponseEntity.ok(lodgings);
+        return ResponseEntity.ok(Boolean.TRUE);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public Map<String, Boolean> deleteLodgings(@PathVariable("id") long id ){
+    public ResponseEntity<Boolean> deleteLodgings(@PathVariable("id") long id ){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
         lodgingsRepository.delete(lodgings);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 
 }

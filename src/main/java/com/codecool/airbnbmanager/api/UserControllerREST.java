@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,7 +63,7 @@ public class UserControllerREST {
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public ResponseEntity<User> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
+    public ResponseEntity<Boolean> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
 
@@ -88,22 +86,20 @@ public class UserControllerREST {
         currentUser.getFullAddress()
                 .setAddress(user.getAddress().getAddress());
 
-        User updatedUser = userRepository.save(currentUser);
+       userRepository.save(currentUser);
 
-        return ResponseEntity.ok().body(updatedUser);
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 
     @DeleteMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public Map<String, Boolean> deleteUser(@PathVariable("username") String username) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
 
         userRepository.delete(user);
 
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 
 }
