@@ -39,7 +39,7 @@ public class UserControllerREST {
         return userServiceREST.getUserTodos(username);
     }
 
-    @PutMapping("/{username}/update")
+    @PutMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public ResponseEntity<?> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
         System.out.println(user.getAddress());
@@ -51,7 +51,7 @@ public class UserControllerREST {
         return new ResponseEntity<>(new ResponseMessage("User updated successfully!"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{username}/delete")
+    @DeleteMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public ResponseEntity<?> deleteUser(@PathVariable("username") String username) {
         if(!userServiceREST.deleteUser(username)){
