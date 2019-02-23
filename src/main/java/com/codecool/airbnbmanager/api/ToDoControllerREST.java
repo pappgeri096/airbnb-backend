@@ -1,7 +1,10 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.message.response.ResponseMessage;
+import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import com.codecool.airbnbmanager.repository.ToDoRepository;
 import com.codecool.airbnbmanager.service.ToDoServiceREST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,29 +18,27 @@ import org.springframework.web.bind.annotation.*;
 public class ToDoControllerREST {
 
     @Autowired
-    private ToDoServiceREST toDoService;
+    private ToDoRepository toDoRepository;
+
+    @Autowired
+    private LodgingsRepository lodgingsRepository;
 
     @PostMapping("/{lodgingsId}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public ResponseEntity<?> addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
-
-        if(!toDoService.addNewTodo(lodgingsId, toDo)){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseMessage("ADDED"), HttpStatus.OK);
+    public ToDo addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
+        Lodgings lodgings = lodgingsRepository.findById(lodgingsId).orElse(null);
+        if(lodgings==null) return null;
+        toDo.setLodgings(lodgings);
+        return toDoRepository.save(toDo);
 
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public ResponseEntity<?> addNewTodo(@PathVariable("id") long id){
-
-        if(!toDoService.deleteTodo(id)){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseMessage("DELETED"), HttpStatus.OK);
+    public void addNewTodo(@PathVariable("id") long id){
+        ToDo toDo = toDoRepository.findById(id).orElse(null);
+        if(toDo==null) return;
+        toDoRepository.delete(toDo);
 
     }
 }
