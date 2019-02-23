@@ -6,10 +6,14 @@ import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,37 +28,46 @@ public class UserControllerREST {
     @Autowired
     private PasswordEncoder encoder;
 
+    private String errorMessage = "User not found with this username!";
+
     @GetMapping(path = {"/{username}"})
-    public User userView(@PathVariable("username") String username) {
-        return userRepository.findByUsername(username).orElse(null);
+    public ResponseEntity<User> userView(@PathVariable("username") String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+
+        return ResponseEntity.ok().body(user);
     }
 
     @GetMapping("/{username}/lodgings")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public Set<Lodgings> getLodgingsByUserName(@PathVariable("username") String username){
-        User user = userRepository.findByUsername(username).orElse(null);
-        Set<Lodgings> lodgings = user!=null ? user.getTenantLodgings() : null;
-        if (lodgings==null) return null;
-        return lodgings;
+    public ResponseEntity<Set<Lodgings>> getLodgingsByUserName(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+        Set<Lodgings> lodgings = user.getTenantLodgings();
+
+        return ResponseEntity.ok().body(lodgings);
     }
 
     @GetMapping("/{username}/todos")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public Set<ToDo> getTodosByUserName(@PathVariable("username") String username){
-        User user = userRepository.findByUsername(username).orElse(null);
-        Set<Lodgings> lodgings = user!=null ? user.getTenantLodgings() : null;
-        if (lodgings==null) return null;
-        return lodgings
+    public ResponseEntity<Set<ToDo>> getTodosByUserName(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+        Set<Lodgings> lodgings = user.getTenantLodgings();
+
+        Set<ToDo> todos = lodgings
                 .stream()
                 .flatMap(l -> l.getTodos().stream())
                 .collect(Collectors.toSet());
+
+        return ResponseEntity.ok().body(todos);
     }
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public User editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
-        User currentUser = userRepository.findByUsername(username).orElse(null);
-        if(currentUser==null) return null;
+    public ResponseEntity<User> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
 
         if(user.getPassword()!=null) currentUser.setPassword(encoder.encode(user.getPassword()));
 
@@ -75,15 +88,22 @@ public class UserControllerREST {
         currentUser.getFullAddress()
                 .setAddress(user.getAddress().getAddress());
 
-        return userRepository.save(currentUser);
+        User updatedUser = userRepository.save(currentUser);
+
+        return ResponseEntity.ok().body(updatedUser);
     }
 
     @DeleteMapping("/{username}")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
-    public void deleteUser(@PathVariable("username") String username) {
-        User user = userRepository.findByUsername(username).orElse(null);
-        if(user==null) return;
+    public Map<String, Boolean> deleteUser(@PathVariable("username") String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+
         userRepository.delete(user);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 
 }
