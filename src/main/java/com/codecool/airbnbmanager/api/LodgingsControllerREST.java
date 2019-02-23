@@ -29,7 +29,8 @@ public class LodgingsControllerREST {
     @PreAuthorize("hasRole('LANDLORD')")
     public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
-        User user = userRepository.findByUsername(username).orElse(new User());
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user == null) return null;
         lodgings.setLandlord(user);
         return lodgingsRepository.save(lodgings);
     }

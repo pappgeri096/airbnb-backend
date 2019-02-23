@@ -25,8 +25,6 @@ public class UserServiceREST {
 
     private PasswordEncoder encoder;
 
-    private LodgingsServiceREST lodgingsServiceREST;
-
     private User handleFindUserByEmail(String userEmail) {
         return userRepository.findUserByEmail(userEmail);
     }
