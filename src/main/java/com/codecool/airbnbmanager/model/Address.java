@@ -17,7 +17,6 @@ public class Address {
     private Long id;
 
     @NotBlank
-    @Size(min = 4)
     private String country;
 
     @NotBlank
