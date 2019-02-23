@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/lodgings")
@@ -33,7 +35,7 @@ public class LodgingsControllerREST {
 
     @PostMapping("/{username}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
+    public Lodgings addNewLodgings(@Valid @RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
@@ -43,7 +45,7 @@ public class LodgingsControllerREST {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
-    public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+    public ResponseEntity<Boolean> updateLodgings(@Valid @RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 
