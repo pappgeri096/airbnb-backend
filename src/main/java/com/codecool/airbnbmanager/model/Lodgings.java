@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,18 +20,12 @@ public class Lodgings {
     private String name;
     @Enumerated(value = EnumType.STRING)
     @JsonProperty()
-    @NotBlank
     private LodgingsType lodgingsType;
 
-    @NotBlank
     private long pricePerDay;
-    @NotBlank
     private long electricityBill;
-    @NotBlank
     private long gasBill;
-    @NotBlank
     private long telecommunicationBill;
-    @NotBlank
     private long cleaningCost;
 
     @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
