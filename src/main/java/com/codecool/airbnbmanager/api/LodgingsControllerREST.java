@@ -11,6 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Set;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/lodgings")
@@ -28,6 +31,20 @@ public class LodgingsControllerREST {
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 
+        return ResponseEntity.ok().body(lodgings);
+    }
+
+    @GetMapping("/search/{keyword}")
+    @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
+    public ResponseEntity<Set<Lodgings>> getLodgingsByKeyword(@PathVariable("keyword") String keyword){
+        Set<Lodgings> lodgings = lodgingsRepository.findByNameStartsWith(keyword);
+        return ResponseEntity.ok().body(lodgings);
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
+    public ResponseEntity<List<Lodgings>> getLodgingsByKeyword(){
+        List<Lodgings> lodgings = lodgingsRepository.findAll();
         return ResponseEntity.ok().body(lodgings);
     }
 
