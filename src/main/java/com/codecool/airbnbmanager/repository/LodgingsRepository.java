@@ -13,6 +13,7 @@ public interface LodgingsRepository extends JpaRepository<Lodgings, Long> {
     List<Lodgings> findByTenants(User user);
     List<Lodgings> getByTenants(User user);
     void deleteById(long id);
-    Set<Lodgings> findByNameStartsWith(String keyword);
+
     List<Lodgings> findByLandlord(User user);
+    Set<Lodgings> findByNameStartsWith(String keyword);
 }
