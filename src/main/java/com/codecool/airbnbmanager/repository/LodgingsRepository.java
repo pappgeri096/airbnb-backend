@@ -13,4 +13,5 @@ public interface LodgingsRepository extends JpaRepository<Lodgings, Long> {
     List<Lodgings> getByTenants(User user);
     void deleteById(long id);
 
+    List<Lodgings> findByLandlord(User user);
 }

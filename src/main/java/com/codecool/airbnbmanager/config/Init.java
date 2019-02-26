@@ -1,14 +1,7 @@
 package com.codecool.airbnbmanager.config;
 
-import com.codecool.airbnbmanager.model.Lodgings;
-import com.codecool.airbnbmanager.model.Role;
-import com.codecool.airbnbmanager.model.ToDo;
-import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.model.Address;
-import com.codecool.airbnbmanager.repository.LodgingsRepository;
-import com.codecool.airbnbmanager.repository.RoleRepository;
-import com.codecool.airbnbmanager.repository.ToDoRepository;
-import com.codecool.airbnbmanager.repository.UserRepository;
+import com.codecool.airbnbmanager.model.*;
+import com.codecool.airbnbmanager.repository.*;
 import com.codecool.airbnbmanager.util.enums.LodgingsType;
 import com.codecool.airbnbmanager.util.enums.RoleName;
 import org.springframework.boot.CommandLineRunner;
@@ -31,12 +24,15 @@ public class Init implements CommandLineRunner {
 
     private ToDoRepository toDoRepository;
 
-    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository, ToDoRepository toDoRepository) {
+    private PendingRepository pendingRepository;
+
+    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository, ToDoRepository toDoRepository, PendingRepository pendingRepository) {
         this.encoder = encoder;
         this.userRepository = userRepository;
         this.lodgingsRepository = lodgingsRepository;
         this.roleRepository = roleRepository;
         this.toDoRepository = toDoRepository;
+        this.pendingRepository = pendingRepository;
     }
 
     @Override
@@ -71,7 +67,7 @@ public class Init implements CommandLineRunner {
         userRepository.save(user);
         userRepository.save(user2);
 
-        Lodgings lodgings = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user2,
+        Lodgings lodgings = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
                 address2);
         lodgings.setTenants(user);
         lodgings.setPropertyManager(user2);
@@ -79,5 +75,8 @@ public class Init implements CommandLineRunner {
 
         ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
         toDoRepository.save(toDo);
+
+        Pending pending = new Pending(user2, lodgings, Boolean.FALSE);
+        pendingRepository.save(pending);
     }
 }
