@@ -1,5 +1,6 @@
 package com.codecool.airbnbmanager.api;
 
+import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
 import com.codecool.airbnbmanager.exceptions.PendingNotFoundException;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.Pending;
@@ -58,6 +59,17 @@ public class PendingController {
         }
 
         this.pendingRepository.save(pending);
+        return ResponseEntity.ok().body(Boolean.TRUE);
+    }
+
+    @PostMapping("/{username}")
+    public ResponseEntity<Boolean> addNewPending(@PathVariable String username, @RequestBody Lodgings lodgings){
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
+        Lodgings currentLodgings = lodgingsRepository.findById(lodgings.getId())
+                .orElseThrow(() -> new LodgingsNotFoundException(lodgings.getId()));
+        Pending pending = new Pending(user, currentLodgings);
+        pendingRepository.save(pending);
         return ResponseEntity.ok().body(Boolean.TRUE);
     }
 }
