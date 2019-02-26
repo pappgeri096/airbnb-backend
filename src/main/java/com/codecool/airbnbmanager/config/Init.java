@@ -40,6 +40,7 @@ public class Init implements CommandLineRunner {
         Address address = new Address("Hungary", "Budapest", "4444", "Paroka street");
         Address address2 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         Address address3 = new Address("Hungary", "Budapest", "4444", "Paroka street");
+        Address address4 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         User user = new User("pokroc", "Nagyika", "Paplan", "paplan@gmail.com", "+36306185528",
                 address,
                 encoder.encode("12345678"));
@@ -73,10 +74,15 @@ public class Init implements CommandLineRunner {
         lodgings.setPropertyManager(user2);
         lodgingsRepository.save(lodgings);
 
+        Lodgings lodgings2 = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
+                address4);
+
+        lodgingsRepository.save(lodgings2);
+
         ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
         toDoRepository.save(toDo);
 
-        Pending pending = new Pending(user2, lodgings, Boolean.FALSE);
+        Pending pending = new Pending(user2, lodgings2, Boolean.FALSE);
         pendingRepository.save(pending);
     }
 }

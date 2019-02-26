@@ -50,6 +50,13 @@ public class PendingController {
                 .orElseThrow(() -> new PendingNotFoundException(pendingId));
 
         pending.setAccepted(method.get("accepted"));
+        if(method.get("accepted")){
+            User user = pending.getUser();
+            Lodgings lodgings = pending.getLodgings();
+            lodgings.setTenants(user);
+            lodgingsRepository.save(lodgings);
+        }
+
         this.pendingRepository.save(pending);
         return ResponseEntity.ok().body(Boolean.TRUE);
     }

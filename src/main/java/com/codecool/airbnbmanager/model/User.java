@@ -222,6 +222,11 @@ public class User {
         return tenantLodgings;
     }
 
+    public void addTenantLodgings(Lodgings lodgings){
+        if(lodgings==null) return;
+        this.tenantLodgings.add(lodgings);
+    }
+
     public void setTenantLodgings(Set<Lodgings> tenantLodgings) {
         this.tenantLodgings = tenantLodgings;
     }
