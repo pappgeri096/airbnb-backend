@@ -1,33 +1,50 @@
 package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.builder.AddressBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "site_user")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="user_type", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue(value = "null")
-public abstract class User {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", unique = true)
     private long id;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
+    private String username;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
     private String firstName;
+
+    @NotBlank
+    @Size(min = 4,max = 20)
     private String surname;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 12)
     private String phoneNumber;
 
-    @JsonIgnore
-    private String passwordHash;
+    @NotBlank
+    private String password;
+
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private AddressBuilder fullAddress;
+    private Address fullAddress;
 
     @OneToMany(mappedBy = "propertyManager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> propertyManagerLodgings = new HashSet<>();
@@ -35,24 +52,35 @@ public abstract class User {
     @OneToMany(mappedBy = "landlord", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> landlordLodgings = new HashSet<>();
 
+    @OneToMany(mappedBy = "tenants", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Lodgings> tenantLodgings = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     public User() {
 
     }
 
     public User(
+            String username,
             String firstName,
             String surname,
             String email,
             String phoneNumber,
-            String passwordHash,
-            AddressBuilder fullAddress
+            Address fullAddress,
+            String password
     ) {
+        this.username = username;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.passwordHash = passwordHash;
         this.fullAddress = fullAddress;
+        this.password = password;
     }
 
     public long getId() {
@@ -128,16 +156,8 @@ public abstract class User {
         this.fullAddress.setAddress(address);
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public Set<Lodgings> getPropertyManagerLodgings() {
@@ -162,12 +182,44 @@ public abstract class User {
     }
 
     @JsonIgnore
-    public AddressBuilder getFullAddress() {
+    public Address getFullAddress() {
         return fullAddress;
     }
 
-    public void setFullAddress(AddressBuilder fullAddress) {
+    public void setFullAddress(Address fullAddress) {
         this.fullAddress = fullAddress;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Lodgings> getTenantLodgings() {
+        return tenantLodgings;
+    }
+
+    public void setTenantLodgings(Set<Lodgings> tenantLodgings) {
+        this.tenantLodgings = tenantLodgings;
     }
 
     @Override
@@ -181,7 +233,10 @@ public abstract class User {
                 ", city='" + getCity() + '\'' +
                 ", zipCode='" + getZipCode() + '\'' +
                 ", address='" + getAddress() + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return firstName+" "+surname;
     }
 }

@@ -1,60 +1,105 @@
 package com.codecool.airbnbmanager.api;
 
-import com.codecool.airbnbmanager.model.Landlord;
+import com.codecool.airbnbmanager.message.request.UserInfo;
+import com.codecool.airbnbmanager.model.Lodgings;
+import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.service.UserServiceREST;
-import com.codecool.airbnbmanager.util.enums.UserFieldType;
-
+import com.codecool.airbnbmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.codecool.airbnbmanager.configuration.Initializer.FAIL_MESSAGE;
-import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSAGE;
-
-// todo: session!!!!!!!!!!
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@RequestMapping("/api/user")
 public class UserControllerREST {
 
-    private String userEmail = "akincsei@gmail.com"; // todo: get it from session
-    private List<String> fieldsToExcludeFromViewEdit = new ArrayList<>();
-
-    {
-        fieldsToExcludeFromViewEdit.add(UserFieldType.LANDLORD_LODGINGS.getInputString());
-        fieldsToExcludeFromViewEdit.add(UserFieldType.PROPERTY_MANAGER_LODGINGS.getInputString());
-        fieldsToExcludeFromViewEdit.add(UserFieldType.PASSWORD_HASH.getInputString());
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    private UserServiceREST userServiceREST;
+    private PasswordEncoder encoder;
 
-    @GetMapping(path = {"/api/user", "/api/user/edit"})
-    public String userView() {
-        return userServiceREST.createJsonStringByAndExcluding(userEmail, fieldsToExcludeFromViewEdit);
+    private String errorMessage = "User not found with this username!";
+
+    @GetMapping(path = {"/{username}"})
+    public ResponseEntity<User> userView(@PathVariable("username") String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+
+        return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping(path = "/api/user/edit", consumes = "text/plain")
-    public String postEditedUserData(@RequestBody String body) {
-        boolean isUpdateSuccessFul = userServiceREST.handleUserUpdate(body);
-        return (isUpdateSuccessFul) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    @GetMapping("/{username}/lodgings")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Set<Lodgings>> getLodgingsByUserName(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+        Set<Lodgings> lodgings = user.getTenantLodgings();
+
+        return ResponseEntity.ok().body(lodgings);
     }
 
+    @GetMapping("/{username}/todos")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Set<ToDo>> getTodosByUserName(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+        Set<Lodgings> lodgings = user.getTenantLodgings();
 
-    @DeleteMapping(path = "/api/user/delete/{id}")
-    public String userDeletion(@PathVariable(name = "id") Long id) {
-        boolean isdDeletionSuccessful = userServiceREST.handleUserDeletionBy(id);
-        return (isdDeletionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+        Set<ToDo> todos = lodgings
+                .stream()
+                .flatMap(l -> l.getTodos().stream())
+                .collect(Collectors.toSet());
+
+        return ResponseEntity.ok().body(todos);
     }
 
-    @PostMapping(path = "/api/user/add")
-    public String userAddPost(@RequestBody String body) {
-        boolean isAdditionSuccessFul = userServiceREST.handleUserAddition(body);
-        return (isAdditionSuccessFul) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    @PutMapping("/{username}")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+
+        if(user.getPassword()!=null) currentUser.setPassword(encoder.encode(user.getPassword()));
+
+        currentUser.setFirstName(user.getFirstname());
+        currentUser.setSurname(user.getSurname());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPhoneNumber(user.getPhoneNumber());
+
+        currentUser.getFullAddress()
+                .setCountry(user.getAddress().getCountry());
+
+        currentUser.getFullAddress()
+                .setCity(user.getAddress().getCity());
+
+        currentUser.getFullAddress()
+                .setZipCode(user.getAddress().getZipCode());
+
+        currentUser.getFullAddress()
+                .setAddress(user.getAddress().getAddress());
+
+       userRepository.save(currentUser);
+
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
+
+    @DeleteMapping("/{username}")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("username") String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+
+        userRepository.delete(user);
+
+        return ResponseEntity.ok().body(Boolean.TRUE);
+    }
+
 }

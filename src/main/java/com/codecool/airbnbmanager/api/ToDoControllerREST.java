@@ -1,57 +1,46 @@
 package com.codecool.airbnbmanager.api;
 
+import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
+import com.codecool.airbnbmanager.exceptions.ToDoNotFoundException;
+import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
-import com.codecool.airbnbmanager.model.User;
-import com.codecool.airbnbmanager.service.ToDoServiceREST;
-
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import com.codecool.airbnbmanager.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServlet;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.codecool.airbnbmanager.configuration.Initializer.FAIL_MESSAGE;
-import static com.codecool.airbnbmanager.configuration.Initializer.SUCCESS_MESSAGE;
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-public class ToDoControllerREST extends HttpServlet {
+@RequestMapping("/api/todos")
+public class ToDoControllerREST {
 
     @Autowired
-    private ToDoServiceREST toDoService;
+    private ToDoRepository toDoRepository;
 
-    @GetMapping(path = "/api/todos")
-    public List<ToDo> toDoViewAll() {
-        return toDoService.getAllToDos();
-    }
+    @Autowired
+    private LodgingsRepository lodgingsRepository;
 
-
-    @GetMapping(path = "/api/all-todos-by-lodgings-id/{id}")
-    public String toDoViewAllByLodgings(@PathVariable(name = "id") Long id) {
-        return toDoService.getAllToDosByLodgingsId(id);
-    }
-
-    @GetMapping(path = {"/api/todo/{id}", "/api/todo/edit/{id}"})
-    public String toDoViewSingleAndEditGet(@PathVariable(name = "id") Long id) {
-        return toDoService.createToDoJsonStringById(id);
-    }
-
-    @PutMapping(path = "/api/todo/edit", consumes = "text/plain")
-    public String toDoEditPost(@RequestBody String body) {
-        boolean isUpdateSuccessful = toDoService.handleToDoUpdate(body);
-        return (isUpdateSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
-    }
-
-    @DeleteMapping(path = "/api/todo/delete/{id}")
-    public String todoDeletion(@PathVariable(name = "id") Long id) {
-        boolean isDeletionSuccessful = toDoService.handleToDoDeletionBy(id);
-        return (isDeletionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    @PostMapping("/{lodgingsId}")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ToDo addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
+        Lodgings lodgings = lodgingsRepository.findById(lodgingsId)
+                .orElseThrow(() -> new LodgingsNotFoundException(lodgingsId));
+        toDo.setLodgings(lodgings);
+        return toDoRepository.save(toDo);
 
     }
 
-    @PostMapping(path = "/api/todo/add")  // , consumes = "application/json", produces = "application/json"
-    public String toDoAddition(@RequestBody String body) {
-        boolean isAdditionSuccessful = toDoService.handleToDoAddition(body);
-        return (isAdditionSuccessful) ? SUCCESS_MESSAGE : FAIL_MESSAGE;
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> addNewTodo(@PathVariable("id") long id){
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(() -> new ToDoNotFoundException(id));
+        toDoRepository.delete(toDo);
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 }

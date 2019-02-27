@@ -24,6 +24,7 @@ public class ToDo {
     @Column(name = "Status")
     @Enumerated(EnumType.STRING)
     private ToDoStatusType status = ToDoStatusType.NEW;
+    @JsonIgnore
     private boolean obsolete = false;
 
     public ToDo() {
@@ -32,6 +33,13 @@ public class ToDo {
     public ToDo(String name, Lodgings lodgings, Date deadline, String description, long price) {
         this.name = name;
         this.lodgings = lodgings;
+        this.deadline = deadline;
+        this.description = description;
+        this.price = price;
+    }
+
+    public ToDo(String name, Date deadline, String description, long price) {
+        this.name = name;
         this.deadline = deadline;
         this.description = description;
         this.price = price;

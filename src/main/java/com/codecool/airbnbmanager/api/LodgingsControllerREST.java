@@ -1,75 +1,73 @@
 package com.codecool.airbnbmanager.api;
 
+import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
 import com.codecool.airbnbmanager.model.Lodgings;
-import com.codecool.airbnbmanager.model.ToDo;
-import com.codecool.airbnbmanager.service.LodgingsServiceREST;
+import com.codecool.airbnbmanager.model.User;
+import com.codecool.airbnbmanager.repository.LodgingsRepository;
+import com.codecool.airbnbmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/lodgings")
 public class LodgingsControllerREST {
 
     @Autowired
-    LodgingsServiceREST lodgingsServiceREST;
+    LodgingsRepository lodgingsRepository;
 
-    private List<String> fieldsToExclude = new ArrayList<>();
+    @Autowired
+    UserRepository userRepository;
 
-//    @PostMapping(value = "/api/login")
-//    public String login(@RequestParam String email, @RequestParam String passw, HttpSession session) {
-//        // kikeresem a DBbol
-//        session.setAttribute("userId", "dsgfdfdg");
-//        return null;
-//    }
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
+    public ResponseEntity<Lodgings> getLodgingsById(@PathVariable("id") long id){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
 
-    @GetMapping(value = "/api/lodgings2") //just for demo
-    public String lodgingsListDemo() {
-        return lodgingsServiceREST.listAllLodgingsByUser("akincsei@gmail.com");
+        return ResponseEntity.ok().body(lodgings);
     }
 
-    @GetMapping(value = "/api/lodgings") //todo: session attribute real key!!!
-    public String lodgingsList(@SessionAttribute("landlord") String userEmail, HttpSession session) {
-        String email = (String) session.getAttribute("emailAddress");
-        return lodgingsServiceREST.listAllLodgingsByUser(userEmail);
+    @PostMapping("/{username}")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
+        lodgings.setLandlord(user);
+        return lodgingsRepository.save(lodgings);
     }
 
-    @GetMapping(value = "/api/lodgings/{lodgingsId}")
-    public String lodgingDetails(@PathVariable String lodgingsId) {
-        return lodgingsServiceREST.createJsonString(Long.parseLong(lodgingsId), fieldsToExclude);
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+        Lodgings currentLodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+
+        currentLodgings.setName(updatedLodgings.getName());
+        currentLodgings.setLodgingsType(updatedLodgings.getLodgingsType());
+        currentLodgings.setPricePerDay(updatedLodgings.getPricePerDay());
+        currentLodgings.setElectricityBill(updatedLodgings.getElectricityBill());
+        currentLodgings.setGasBill(updatedLodgings.getGasBill());
+        currentLodgings.setTelecommunicationBill(updatedLodgings.getTelecommunicationBill());
+        currentLodgings.setCleaningCost(updatedLodgings.getCleaningCost());
+        currentLodgings.setFullAddress(updatedLodgings.getFullAddress());
+
+        lodgingsRepository.save(currentLodgings);
+
+        return ResponseEntity.ok(Boolean.TRUE);
     }
 
-    @GetMapping(value = "/api/lodgings/edit/{lodgingsId}")
-    public String getLodgingEdit(@PathVariable String lodgingsId) {
-        return lodgingsServiceREST.createJsonString(Long.parseLong(lodgingsId), fieldsToExclude);
-    }
-
-    @PutMapping(value = "/api/lodgings/edit/{lodgingsId}", consumes = "text/plain")
-    public String postLodgingEdit(@RequestBody String body) {
-        boolean isUpdateSuccessFul = lodgingsServiceREST.handleLodgingsUpdate(body);
-        return (isUpdateSuccessFul) ? "SUCCESS" : "FAIL";
-    }
-
-    @DeleteMapping(value = "/api/lodgings/delete/{lodgingsId}")
-    @Transactional
-    public String deleteLodgings(@PathVariable String lodgingsId) {
-        boolean isDeletionSuccessful = lodgingsServiceREST.handleLodgingsDeletion(Long.parseLong(lodgingsId));
-        return (isDeletionSuccessful) ? "SUCCESS" : "FAIL";
-    }
-
-    @PostMapping(value = "/api/lodgings/add") //todo: session attribute real key!!!
-    public String addLodgings(@RequestBody String body, @SessionAttribute("landlord") String landlordEmail) {
-        boolean isAddSuccessful = lodgingsServiceREST.handleAddNewLodgings(body, landlordEmail);
-        return (isAddSuccessful) ? "SUCCESS" : "FAIL";
-    }
-
-    @PostMapping(path = "/api/lodgings-add-todo/{id}", consumes = "application/json", produces = "application/json")
-    public Lodgings addToDoToLodgings(@PathVariable(name = "id") Long id, @RequestBody ToDo body) {
-        return lodgingsServiceREST.handleAddTodoToLodgings(id, body); // todo: use ResponseEntity<>
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> deleteLodgings(@PathVariable("id") long id ){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+        lodgingsRepository.delete(lodgings);
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 
 }

@@ -1,22 +1,32 @@
-package com.codecool.airbnbmanager.model.builder;
+package com.codecool.airbnbmanager.model;
 
-import com.codecool.airbnbmanager.model.Lodgings;
-import com.codecool.airbnbmanager.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class AddressBuilder {
+public class Address {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 4)
     private String country;
+
+    @NotBlank
     private String city;
+
+    @NotBlank
     private String zipCode;
+
+    @NotBlank
     private String address;
 
     @JsonIgnore
@@ -25,13 +35,13 @@ public class AddressBuilder {
 
     @JsonIgnore
     @OneToOne(mappedBy = "fullAddress", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    Lodgings lodgings;
+    private Lodgings lodgings;
 
 
-    public AddressBuilder() {
+    public Address() {
     }
 
-    public AddressBuilder(String country, String city, String zipCode, String address) {
+    public Address(String country, String city, String zipCode, String address) {
         this.country = country;
         this.city = city;
         this.zipCode = zipCode;
@@ -84,5 +94,13 @@ public class AddressBuilder {
 
     public void setLodgings(Lodgings lodgings) {
         this.lodgings = lodgings;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
