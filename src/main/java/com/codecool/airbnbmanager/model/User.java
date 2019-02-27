@@ -55,10 +55,6 @@ public class User {
     @OneToMany(mappedBy = "tenants", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> tenantLodgings = new HashSet<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Pending> pendings = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -222,21 +218,8 @@ public class User {
         return tenantLodgings;
     }
 
-    public void addTenantLodgings(Lodgings lodgings){
-        if(lodgings==null) return;
-        this.tenantLodgings.add(lodgings);
-    }
-
     public void setTenantLodgings(Set<Lodgings> tenantLodgings) {
         this.tenantLodgings = tenantLodgings;
-    }
-
-    public Set<Pending> getPendings() {
-        return pendings;
-    }
-
-    public void setPendings(Set<Pending> pendings) {
-        this.pendings = pendings;
     }
 
     @Override

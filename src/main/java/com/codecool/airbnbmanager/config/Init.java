@@ -24,15 +24,12 @@ public class Init implements CommandLineRunner {
 
     private ToDoRepository toDoRepository;
 
-    private PendingRepository pendingRepository;
-
-    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository, ToDoRepository toDoRepository, PendingRepository pendingRepository) {
+    public Init(PasswordEncoder encoder, UserRepository userRepository, LodgingsRepository lodgingsRepository, RoleRepository roleRepository, ToDoRepository toDoRepository) {
         this.encoder = encoder;
         this.userRepository = userRepository;
         this.lodgingsRepository = lodgingsRepository;
         this.roleRepository = roleRepository;
         this.toDoRepository = toDoRepository;
-        this.pendingRepository = pendingRepository;
     }
 
     @Override
@@ -82,7 +79,5 @@ public class Init implements CommandLineRunner {
         ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
         toDoRepository.save(toDo);
 
-        Pending pending = new Pending(user2, lodgings2, Boolean.FALSE);
-        pendingRepository.save(pending);
     }
 }

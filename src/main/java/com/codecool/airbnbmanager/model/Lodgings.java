@@ -28,10 +28,6 @@ public class Lodgings {
     private Set<ToDo> todos = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Pending> pendings = new HashSet<>();
-
-    @JsonIgnore
     @ManyToOne
     private User landlord;
 
