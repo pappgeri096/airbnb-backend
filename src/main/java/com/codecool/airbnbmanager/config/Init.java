@@ -42,7 +42,7 @@ public class Init implements CommandLineRunner {
                 address,
                 encoder.encode("12345678"));
 
-        User user2 = new User("pokrocka", "Nagyika", "Paplan", "paplan@gmail.com", "+36306185528",
+        User user2 = new User("pokrocka", "Nagyika", "Paplan", "diszno@gmail.com", "+36306185528",
                 address3,
                 encoder.encode("12345678"));
         Set<Role> roles = new HashSet<>();
@@ -71,7 +71,7 @@ public class Init implements CommandLineRunner {
         lodgings.setPropertyManager(user2);
         lodgingsRepository.save(lodgings);
 
-        Lodgings lodgings2 = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
+        Lodgings lodgings2 = new Lodgings("Diszno Street", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
                 address4);
 
         lodgingsRepository.save(lodgings2);

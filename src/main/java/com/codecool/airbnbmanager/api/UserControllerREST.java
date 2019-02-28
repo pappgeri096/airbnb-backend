@@ -46,6 +46,19 @@ public class UserControllerREST {
         return ResponseEntity.ok().body(lodgings);
     }
 
+    @GetMapping("/{username}/landlord")
+    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    public ResponseEntity<Set<Lodgings>> getLandordLodgings(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
+        Set<Lodgings> lodgings = user.getLandlordLodgings()
+                .stream()
+                .filter(l -> l.getTenants()==null)
+                .collect(Collectors.toSet());
+
+        return ResponseEntity.ok().body(lodgings);
+    }
+
     @GetMapping("/{username}/todos")
     @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
     public ResponseEntity<Set<ToDo>> getTodosByUserName(@PathVariable("username") String username){
