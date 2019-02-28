@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
+import com.codecool.airbnbmanager.message.request.InviteForm;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
@@ -39,6 +40,19 @@ public class LodgingsControllerREST {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
         lodgings.setLandlord(user);
         return lodgingsRepository.save(lodgings);
+    }
+
+    @PostMapping("/invite")
+    @PreAuthorize("hasRole('LANDLORD')")
+    public ResponseEntity<Boolean> addTenantsToLodgings(@RequestBody InviteForm inviteForm){
+        System.out.println(inviteForm);
+        Lodgings lodgings = lodgingsRepository.findById(inviteForm.getLodgingsId())
+                .orElseThrow(() -> new LodgingsNotFoundException(inviteForm.getLodgingsId()));
+        User user = userRepository.findUserByEmail(inviteForm.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with this email!"));
+        lodgings.setTenants(user);
+        lodgingsRepository.save(lodgings);
+        return ResponseEntity.ok().body(Boolean.TRUE);
     }
 
     @PutMapping("/{id}")
