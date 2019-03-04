@@ -43,7 +43,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Address fullAddress;
 
