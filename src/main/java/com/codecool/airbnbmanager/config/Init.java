@@ -77,7 +77,9 @@ public class Init implements CommandLineRunner {
         lodgingsRepository.save(lodgings2);
 
         ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
+        ToDo toDo2 = new ToDo("lEFAGYOTT az ablak", lodgings, new Date(),"Nem kene", 1000);
         toDoRepository.save(toDo);
+        toDoRepository.save(toDo2);
 
     }
 }
