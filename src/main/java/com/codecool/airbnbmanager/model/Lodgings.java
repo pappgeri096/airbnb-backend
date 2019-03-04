@@ -27,7 +27,6 @@ public class Lodgings {
     @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ToDo> todos = new HashSet<>();
 
-    @JsonIgnore
     @ManyToOne
     private User landlord;
 
@@ -39,7 +38,6 @@ public class Lodgings {
     @OneToOne(cascade = CascadeType.ALL)
     private Address fullAddress;
 
-    @JsonIgnore
     @ManyToOne
     private User tenants;
 

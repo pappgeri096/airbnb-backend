@@ -75,6 +75,15 @@ public class LodgingsControllerREST {
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
+    @DeleteMapping("/{lodgingsId}/removeTenants")
+    public ResponseEntity<Boolean> removeTenantsFromLodgings(@PathVariable("lodgingsId") long id){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+        lodgings.setTenants(null);
+        lodgingsRepository.save(lodgings);
+        return ResponseEntity.ok().body(Boolean.TRUE);
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('LANDLORD')")
     public ResponseEntity<Boolean> deleteLodgings(@PathVariable("id") long id ){
