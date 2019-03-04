@@ -40,6 +40,7 @@ public class User {
     private String phoneNumber;
 
     @NotBlank
+    @JsonIgnore
     private String password;
 
 
@@ -49,9 +50,11 @@ public class User {
     @OneToMany(mappedBy = "propertyManager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> propertyManagerLodgings = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "landlord", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> landlordLodgings = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tenants", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> tenantLodgings = new HashSet<>();
 
