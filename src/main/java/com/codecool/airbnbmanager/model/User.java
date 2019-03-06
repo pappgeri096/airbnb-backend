@@ -41,6 +41,7 @@ public class User {
 
     @NotBlank
     @JsonIgnore
+    @Size(min = 8)
     private String password;
 
     @OneToMany(mappedBy = "propertyManager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
