@@ -81,7 +81,6 @@ public class AuthRestAPIs {
 				.setSurname(signUpRequest.getSurname())
 				.setEmail(signUpRequest.getEmail())
 				.setPhoneNumber(signUpRequest.getPhoneNumber())
-				.setFullAddress(signUpRequest.getAddress())
 				.setPassword(encoder.encode(signUpRequest.getPassword()))
 				.createUser();
 

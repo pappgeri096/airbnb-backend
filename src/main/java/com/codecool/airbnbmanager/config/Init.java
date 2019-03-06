@@ -39,11 +39,9 @@ public class Init implements CommandLineRunner {
         Address address3 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         Address address4 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         User user = new User("pokroc", "Nagyika", "Paplan", "paplan@gmail.com", "+36306185528",
-                address,
                 encoder.encode("12345678"));
 
         User user2 = new User("pokrocka", "Nagyika", "Paplan", "diszno@gmail.com", "+36306185528",
-                address3,
                 encoder.encode("12345678"));
         Set<Role> roles = new HashSet<>();
         Set<Role> roles2 = new HashSet<>();
