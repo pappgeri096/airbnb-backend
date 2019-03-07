@@ -1,6 +1,5 @@
 package com.codecool.airbnbmanager.model.builder;
 
-import com.codecool.airbnbmanager.model.Address;
 import com.codecool.airbnbmanager.model.User;
 
 public class UserBuilder {
@@ -9,7 +8,6 @@ public class UserBuilder {
     private String surname;
     private String email;
     private String phoneNumber;
-    private Address fullAddress;
     private String password;
 
     public UserBuilder setUsername(String username) {
@@ -37,17 +35,12 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setFullAddress(Address fullAddress) {
-        this.fullAddress = fullAddress;
-        return this;
-    }
-
     public UserBuilder setPassword(String password) {
         this.password = password;
         return this;
     }
 
     public User createUser() {
-        return new User(username, firstName, surname, email, phoneNumber, fullAddress, password);
+        return new User(username, firstName, surname, email, phoneNumber, password);
     }
 }

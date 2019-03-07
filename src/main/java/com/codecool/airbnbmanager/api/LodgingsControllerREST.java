@@ -1,6 +1,7 @@
 package com.codecool.airbnbmanager.api;
 
 import com.codecool.airbnbmanager.exceptions.LodgingsNotFoundException;
+import com.codecool.airbnbmanager.message.request.InviteForm;
 import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.LodgingsRepository;
@@ -23,7 +24,7 @@ public class LodgingsControllerREST {
     UserRepository userRepository;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Lodgings> getLodgingsById(@PathVariable("id") long id){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
@@ -32,7 +33,7 @@ public class LodgingsControllerREST {
     }
 
     @PostMapping("/{username}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
         User user = userRepository.findByUsername(username)
@@ -41,8 +42,21 @@ public class LodgingsControllerREST {
         return lodgingsRepository.save(lodgings);
     }
 
+    @PostMapping("/invite")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Boolean> addTenantsToLodgings(@RequestBody InviteForm inviteForm){
+        System.out.println(inviteForm);
+        Lodgings lodgings = lodgingsRepository.findById(inviteForm.getLodgingsId())
+                .orElseThrow(() -> new LodgingsNotFoundException(inviteForm.getLodgingsId()));
+        User user = userRepository.findUserByEmail(inviteForm.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with this email!"));
+        lodgings.setTenants(user);
+        lodgingsRepository.save(lodgings);
+        return ResponseEntity.ok().body(Boolean.TRUE);
+    }
+
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
@@ -61,8 +75,18 @@ public class LodgingsControllerREST {
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
+    @DeleteMapping("/{lodgingsId}/removeTenants")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Boolean> removeTenantsFromLodgings(@PathVariable("lodgingsId") long id){
+        Lodgings lodgings = lodgingsRepository.findById(id)
+                .orElseThrow(() -> new LodgingsNotFoundException(id));
+        lodgings.setTenants(null);
+        lodgingsRepository.save(lodgings);
+        return ResponseEntity.ok().body(Boolean.TRUE);
+    }
+
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> deleteLodgings(@PathVariable("id") long id ){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +15,8 @@ public class Lodgings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank
+    @Size(min = 4)
     private String name;
     @Enumerated(value = EnumType.STRING)
     @JsonProperty()
@@ -27,7 +31,6 @@ public class Lodgings {
     @OneToMany(mappedBy = "lodgings", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ToDo> todos = new HashSet<>();
 
-    @JsonIgnore
     @ManyToOne
     private User landlord;
 
@@ -39,7 +42,6 @@ public class Lodgings {
     @OneToOne(cascade = CascadeType.ALL)
     private Address fullAddress;
 
-    @JsonIgnore
     @ManyToOne
     private User tenants;
 
