@@ -28,7 +28,7 @@ public class ToDoControllerREST {
     private LodgingsRepository lodgingsRepository;
 
     @PostMapping("/{lodgingsId}")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ToDo addNewTodo(@PathVariable("lodgingsId") long lodgingsId, @RequestBody ToDo toDo){
         Lodgings lodgings = lodgingsRepository.findById(lodgingsId)
                 .orElseThrow(() -> new LodgingsNotFoundException(lodgingsId));
@@ -38,7 +38,7 @@ public class ToDoControllerREST {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> addNewTodo(@PathVariable("id") long id){
         ToDo toDo = toDoRepository.findById(id)
                 .orElseThrow(() -> new ToDoNotFoundException(id));
@@ -47,7 +47,7 @@ public class ToDoControllerREST {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> markTodo(@PathVariable("id") long id, @RequestBody ToDo todo){
         ToDo currentTodo = toDoRepository.findById(todo.getId())
                 .orElseThrow(() -> new ToDoNotFoundException(todo.getId()) );
