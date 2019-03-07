@@ -22,8 +22,6 @@ public class UserInfo {
 
     @NotBlank
     private String phoneNumber;
-
-    private Address address;
     
     private Set<String> role;
 
@@ -68,14 +66,6 @@ public class UserInfo {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public Set<String> getRole() {
