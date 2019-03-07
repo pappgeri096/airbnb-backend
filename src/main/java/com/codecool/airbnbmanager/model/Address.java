@@ -30,10 +30,6 @@ public class Address {
     private String address;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "fullAddress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<User> userSet = new HashSet<>();
-
-    @JsonIgnore
     @OneToOne(mappedBy = "fullAddress", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Lodgings lodgings;
 
@@ -78,14 +74,6 @@ public class Address {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Set<User> getUserSet() {
-        return userSet;
-    }
-
-    public void setUserSet(Set<User> ownerList) {
-        this.userSet = ownerList;
     }
 
     public Lodgings getLodgings() {

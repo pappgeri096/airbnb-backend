@@ -41,10 +41,8 @@ public class User {
 
     @NotBlank
     @JsonIgnore
+    @Size(min = 8)
     private String password;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private Address fullAddress;
 
     @OneToMany(mappedBy = "propertyManager", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lodgings> propertyManagerLodgings = new HashSet<>();
@@ -73,7 +71,6 @@ public class User {
             String surname,
             String email,
             String phoneNumber,
-            Address fullAddress,
             String password
     ) {
         this.username = username;
@@ -81,7 +78,6 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.fullAddress = fullAddress;
         this.password = password;
     }
 
@@ -126,38 +122,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCountry() {
-        return fullAddress.getCountry();
-    }
-
-    public void setCountry(String country) {
-        this.fullAddress.setCountry(country);
-    }
-
-    public String getCity() {
-        return fullAddress.getCity();
-    }
-
-    public void setCity(String city) {
-        this.fullAddress.setCity(city);
-    }
-
-    public String getZipCode() {
-        return fullAddress.getZipCode();
-    }
-
-    public void setZipCode(String zipCode) {
-        this.fullAddress.setZipCode(zipCode);
-    }
-
-    public String getAddress() {
-        return fullAddress.getAddress();
-    }
-
-    public void setAddress(String address) {
-        this.fullAddress.setAddress(address);
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -181,15 +145,6 @@ public class User {
     @JsonIgnore
     public String getFullName() {
         return getFirstName() + " " + getSurname();
-    }
-
-    @JsonIgnore
-    public Address getFullAddress() {
-        return fullAddress;
-    }
-
-    public void setFullAddress(Address fullAddress) {
-        this.fullAddress = fullAddress;
     }
 
     public String getUsername() {
@@ -222,20 +177,6 @@ public class User {
 
     public void setTenantLodgings(Set<Lodgings> tenantLodgings) {
         this.tenantLodgings = tenantLodgings;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", country='" + getCountry() + '\'' +
-                ", city='" + getCity() + '\'' +
-                ", zipCode='" + getZipCode() + '\'' +
-                ", address='" + getAddress() + '\'' +
-                '}';
     }
 
     public String getName() {

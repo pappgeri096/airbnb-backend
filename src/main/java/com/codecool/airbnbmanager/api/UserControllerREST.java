@@ -5,6 +5,7 @@ import com.codecool.airbnbmanager.model.Lodgings;
 import com.codecool.airbnbmanager.model.ToDo;
 import com.codecool.airbnbmanager.model.User;
 import com.codecool.airbnbmanager.repository.UserRepository;
+import com.codecool.airbnbmanager.util.enums.ToDoStatusType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,10 +52,7 @@ public class UserControllerREST {
     public ResponseEntity<Set<Lodgings>> getLandordLodgings(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
-        Set<Lodgings> lodgings = user.getLandlordLodgings()
-                .stream()
-                .filter(l -> l.getTenants()==null)
-                .collect(Collectors.toSet());
+        Set<Lodgings> lodgings = user.getLandlordLodgings();
 
         return ResponseEntity.ok().body(lodgings);
     }
@@ -64,11 +62,12 @@ public class UserControllerREST {
     public ResponseEntity<Set<ToDo>> getTodosByUserName(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
-        Set<Lodgings> lodgings = user.getTenantLodgings();
+        Set<Lodgings> lodgings = user.getLandlordLodgings();
 
         Set<ToDo> todos = lodgings
                 .stream()
                 .flatMap(l -> l.getTodos().stream())
+                .filter(toDo -> toDo.getStatus()== ToDoStatusType.NEW)
                 .collect(Collectors.toSet());
 
         return ResponseEntity.ok().body(todos);
@@ -86,18 +85,6 @@ public class UserControllerREST {
         currentUser.setSurname(user.getSurname());
         currentUser.setEmail(user.getEmail());
         currentUser.setPhoneNumber(user.getPhoneNumber());
-
-        currentUser.getFullAddress()
-                .setCountry(user.getAddress().getCountry());
-
-        currentUser.getFullAddress()
-                .setCity(user.getAddress().getCity());
-
-        currentUser.getFullAddress()
-                .setZipCode(user.getAddress().getZipCode());
-
-        currentUser.getFullAddress()
-                .setAddress(user.getAddress().getAddress());
 
        userRepository.save(currentUser);
 
