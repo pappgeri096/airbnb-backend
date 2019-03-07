@@ -30,6 +30,7 @@ public class UserControllerREST {
     private String errorMessage = "User not found with this username!";
 
     @GetMapping(path = {"/{username}"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<User> userView(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
@@ -38,7 +39,7 @@ public class UserControllerREST {
     }
 
     @GetMapping("/{username}/lodgings")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<Lodgings>> getLodgingsByUserName(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
@@ -48,7 +49,7 @@ public class UserControllerREST {
     }
 
     @GetMapping("/{username}/landlord")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<Lodgings>> getLandordLodgings(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
@@ -58,7 +59,7 @@ public class UserControllerREST {
     }
 
     @GetMapping("/{username}/todos")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<ToDo>> getTodosByUserName(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
@@ -74,7 +75,7 @@ public class UserControllerREST {
     }
 
     @PutMapping("/{username}")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> editUser(@PathVariable("username") String username, @RequestBody UserInfo user) {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));
@@ -92,7 +93,7 @@ public class UserControllerREST {
     }
 
     @DeleteMapping("/{username}")
-    @PreAuthorize("hasRole('USER') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> deleteUser(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(errorMessage));

@@ -24,7 +24,7 @@ public class LodgingsControllerREST {
     UserRepository userRepository;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') OR hasRole('PROPERTY') OR hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Lodgings> getLodgingsById(@PathVariable("id") long id){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
@@ -33,7 +33,7 @@ public class LodgingsControllerREST {
     }
 
     @PostMapping("/{username}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
         User user = userRepository.findByUsername(username)
@@ -43,7 +43,7 @@ public class LodgingsControllerREST {
     }
 
     @PostMapping("/invite")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> addTenantsToLodgings(@RequestBody InviteForm inviteForm){
         System.out.println(inviteForm);
         Lodgings lodgings = lodgingsRepository.findById(inviteForm.getLodgingsId())
@@ -56,7 +56,7 @@ public class LodgingsControllerREST {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
@@ -76,6 +76,7 @@ public class LodgingsControllerREST {
     }
 
     @DeleteMapping("/{lodgingsId}/removeTenants")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> removeTenantsFromLodgings(@PathVariable("lodgingsId") long id){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
@@ -85,7 +86,7 @@ public class LodgingsControllerREST {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('LANDLORD')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> deleteLodgings(@PathVariable("id") long id ){
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));

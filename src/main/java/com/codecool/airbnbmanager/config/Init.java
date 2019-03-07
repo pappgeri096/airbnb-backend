@@ -34,9 +34,7 @@ public class Init implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Address address = new Address("Hungary", "Budapest", "4444", "Paroka street");
         Address address2 = new Address("Hungary", "Budapest", "4444", "Paroka street");
-        Address address3 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         Address address4 = new Address("Hungary", "Budapest", "4444", "Paroka street");
         User user = new User("pokroc", "Nagyika", "Paplan", "paplan@gmail.com", "+36306185528",
                 encoder.encode("12345678"));
@@ -47,10 +45,8 @@ public class Init implements CommandLineRunner {
         Set<Role> roles2 = new HashSet<>();
 
         roleRepository.save(new Role(RoleName.ROLE_USER));
-        roleRepository.save(new Role(RoleName.ROLE_PROPERTY));
-        roleRepository.save(new Role(RoleName.ROLE_LANDLORD));
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_LANDLORD)
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 
         Role landlordRole = roleRepository.findByName(RoleName.ROLE_USER)
