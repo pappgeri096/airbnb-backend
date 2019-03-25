@@ -10,6 +10,9 @@ public class UserBuilder {
     private String phoneNumber;
     private String password;
 
+    public UserBuilder() {
+    }
+
     public UserBuilder setUsername(String username) {
         this.username = username;
         return this;
