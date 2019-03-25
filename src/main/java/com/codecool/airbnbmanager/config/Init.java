@@ -33,13 +33,13 @@ public class Init implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        Address address2 = new Address("Hungary", "Budapest", "4444", "Paroka street");
-        Address address4 = new Address("Hungary", "Budapest", "4444", "Paroka street");
-        User user = new User("pokroc", "Nagyika", "Paplan", "paplan@gmail.com", "+36306185528",
+    public void run(String... args) {
+        Address address2 = new Address("Hungary", "Budapest", "1065", "Nagymező u. 44");
+        Address address4 = new Address("Hungary", "Miskolc", "3525", "Régiposta u. 9.");
+        User user = new User("kedvesMiki", "What", "Who!", "kedvesmiki@gmail.com", "+36306000000",
                 encoder.encode("12345678"));
 
-        User user2 = new User("pokrocka", "Nagyika", "Paplan", "diszno@gmail.com", "+36306185528",
+        User user2 = new User("vidisBali", "Farago", "Balazs", "vidisbali@gmail.com", "+36306000001",
                 encoder.encode("12345678"));
         Set<Role> roles = new HashSet<>();
         Set<Role> roles2 = new HashSet<>();
@@ -59,21 +59,22 @@ public class Init implements CommandLineRunner {
         userRepository.save(user);
         userRepository.save(user2);
 
-        Lodgings lodgings = new Lodgings("Paroka Hotel", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
+        Lodgings lodgings = new Lodgings("CodeCool Budapest", LodgingsType.FAMILY_HOUSE, 250000, 30000, 10000, 10000, 25000, user,
                 address2);
         lodgings.setTenants(user);
-        lodgings.setPropertyManager(user2);
         lodgingsRepository.save(lodgings);
 
-        Lodgings lodgings2 = new Lodgings("Diszno Street", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
+        Lodgings lodgings2 = new Lodgings("CodeCool Miskolc", LodgingsType.FAMILY_HOUSE, 1000, 444, 555, 666, 6666, user,
                 address4);
-
+        lodgings2.setTenants(user2);
         lodgingsRepository.save(lodgings2);
 
-        ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Nem kene", 1000);
-        ToDo toDo2 = new ToDo("lEFAGYOTT az ablak", lodgings, new Date(),"Nem kene", 1000);
+        ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Az egyik idi.. diak 'veletlenul' eltorte. ", 7000);
+        ToDo toDo2 = new ToDo("Nem mukodik a lift", lodgings, new Date(),"Nem mukodik.", 10000);
+        ToDo toDo3 = new ToDo("Nem lehet lehuzni a wct", lodgings, new Date(),"Szag...", 10000);
         toDoRepository.save(toDo);
         toDoRepository.save(toDo2);
+        toDoRepository.save(toDo3);
 
     }
 }
