@@ -4,23 +4,17 @@ You can add or remove tenants and add todos about the property(s).
 
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/584screencapture_localhos.png)
 
-## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for review or development.
+## Technology
 
-### Prerequisites
+### Backend
 ```
-Java 8
+Spring Boot
 PostgresQL
-Code editor (IDE)
-Git
 Maven
-Angular CLI (frontend)
 ```
-
-
-### How to run
+### Frontend
 ```
-You'll need 
-
+Angular 6
+Angular CLI
+npm (w/NodeJs)
 ```
-
