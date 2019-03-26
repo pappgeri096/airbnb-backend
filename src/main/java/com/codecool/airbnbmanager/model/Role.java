@@ -6,7 +6,7 @@ import com.codecool.airbnbmanager.util.enums.RoleName;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "role")
+@Table(name = "user_roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
