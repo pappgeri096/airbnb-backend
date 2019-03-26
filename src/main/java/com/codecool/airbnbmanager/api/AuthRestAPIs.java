@@ -85,7 +85,9 @@ public class AuthRestAPIs {
 				.createUser();
 
 		Set<Role> roles = new HashSet<>();
-
+       if(roleRepository.findByName(RoleName.ROLE_USER).orElse(null) == null) {
+           roleRepository.save(new Role(RoleName.ROLE_USER));
+       }
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 				.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 		roles.add(userRole);
