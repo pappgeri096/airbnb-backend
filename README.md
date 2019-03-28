@@ -2,9 +2,8 @@
 You can manage your owned and rented lodgings in one place. You can add your lodgings and invite its tenants, or remove when she/he move out. Your tenants have the opportunity to report any to do about the lodgings.
 
 ## Screenshoots
-
-![alt text](http://www.kepfeltoltes.eu/images/2019/03/708screencapture_localhos.png)
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/648screencapture_localhos.png)
+![alt text](http://www.kepfeltoltes.eu/images/2019/03/708screencapture_localhos.png)
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/685screencapture_localhos.png)
 
 ## Technology
