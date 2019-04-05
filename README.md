@@ -7,7 +7,7 @@ https://github.com/pappgeri096/airnb-frontend
 ## Demo
 **Username:** johndoe\
 **Password:** 12345678\
-https://lodgings-manager.herokuapp.com
+**Link:** https://lodgings-manager.herokuapp.com
 
 ## Technology Stack
 ```
