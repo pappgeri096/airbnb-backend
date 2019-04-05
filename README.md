@@ -5,6 +5,8 @@ You can manage your owned and rented lodgings in one place. You can add your lod
 https://github.com/pappgeri096/airnb-frontend
 
 ## Demo
+**Username:** johndoe
+**Password:** 12345678
 https://lodgings-manager.herokuapp.com
 
 ## Technology Stack
