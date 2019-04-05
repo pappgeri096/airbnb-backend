@@ -4,16 +4,20 @@ You can manage your owned and rented lodgings in one place. You can add your lod
 ## Demo
 https://lodgings-manager.herokuapp.com
 
+## Technology Stack
+```
+Java 8
+Spring Boot
+PostgresQL
+Bootstrap 4
+Angular (v6)
+```
+
 ## Screenshoots
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/648screencapture_localhos.png)
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/708screencapture_localhos.png)
 ![alt text](http://www.kepfeltoltes.eu/images/2019/03/685screencapture_localhos.png)
 
-## Technology
-```
-Spring Boot
-PostgresQL
-```
 ## How to run
 1. Make sure that you have this technology installed on your computer:
 - Java 8
