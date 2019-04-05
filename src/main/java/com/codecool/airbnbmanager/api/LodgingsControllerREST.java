@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/lodgings")
@@ -22,6 +24,11 @@ public class LodgingsControllerREST {
 
     @Autowired
     UserRepository userRepository;
+
+    @GetMapping("/test")
+    public List<Lodgings> getAll(){
+        return lodgingsRepository.findAll();
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
