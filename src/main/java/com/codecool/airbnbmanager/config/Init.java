@@ -36,10 +36,10 @@ public class Init implements CommandLineRunner {
     public void run(String... args) {
         Address address2 = new Address("Hungary", "Budapest", "1065", "Nagymező u. 44");
         Address address4 = new Address("Hungary", "Miskolc", "3525", "Régiposta u. 9.");
-        User user = new User("kedvesMiki", "What", "Who!", "kedvesmiki@gmail.com", "+36306000000",
+        User user = new User("johndoe", "John", "Doe!", "johndoe@gmail.com", "+36306000000",
                 encoder.encode("12345678"));
 
-        User user2 = new User("vidisBali", "Farago", "Balazs", "vidisbali@gmail.com", "+36306000001",
+        User user2 = new User("janedoe", "Jane", "DOe!", "janedoe@gmail.com", "+36306000001",
                 encoder.encode("12345678"));
         Set<Role> roles = new HashSet<>();
         Set<Role> roles2 = new HashSet<>();
@@ -69,12 +69,10 @@ public class Init implements CommandLineRunner {
         lodgings2.setTenants(user2);
         lodgingsRepository.save(lodgings2);
 
-        ToDo toDo = new ToDo("ELtort az ablak", lodgings, new Date(),"Az egyik idi.. diak 'veletlenul' eltorte. ", 7000);
-        ToDo toDo2 = new ToDo("Nem mukodik a lift", lodgings, new Date(),"Nem mukodik.", 10000);
-        ToDo toDo3 = new ToDo("Nem lehet lehuzni a wct", lodgings, new Date(),"Szag...", 10000);
+        ToDo toDo = new ToDo("Broken window", lodgings, new Date(),"Unfortunately the wind broke it", 7000);
+        ToDo toDo2 = new ToDo("Lift not working properly", lodgings, new Date(),"Can't use it.", 10000);
         toDoRepository.save(toDo);
         toDoRepository.save(toDo2);
-        toDoRepository.save(toDo3);
 
     }
 }
