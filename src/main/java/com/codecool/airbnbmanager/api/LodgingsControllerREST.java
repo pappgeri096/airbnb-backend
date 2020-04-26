@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//todo: SERVICE LOGIC IN THIS CLASS
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/lodgings")
@@ -33,6 +34,8 @@ public class LodgingsControllerREST {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Lodgings> getLodgingsById(@PathVariable("id") long id){
+
+        //TODO: but what would you give back if you don't have a result?
         Lodgings lodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 
@@ -43,6 +46,7 @@ public class LodgingsControllerREST {
     @PreAuthorize("hasRole('USER')")
     public Lodgings addNewLodgings(@RequestBody Lodgings lodgings, @PathVariable("username") String username ){
 
+        //TODO: SERVICE LOGIC
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with this username!"));
         lodgings.setLandlord(user);
@@ -53,6 +57,8 @@ public class LodgingsControllerREST {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> addTenantsToLodgings(@RequestBody InviteForm inviteForm){
         System.out.println(inviteForm);
+
+        //TODO: service logic
         Lodgings lodgings = lodgingsRepository.findById(inviteForm.getLodgingsId())
                 .orElseThrow(() -> new LodgingsNotFoundException(inviteForm.getLodgingsId()));
         User user = userRepository.findUserByEmail(inviteForm.getEmail())
@@ -65,6 +71,8 @@ public class LodgingsControllerREST {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> updateLodgings(@RequestBody Lodgings updatedLodgings, @PathVariable("id") long id ){
+
+        //TODO: SERVICE LOGIC
         Lodgings currentLodgings = lodgingsRepository.findById(id)
                 .orElseThrow(() -> new LodgingsNotFoundException(id));
 

@@ -26,6 +26,7 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -49,6 +50,7 @@ public class AuthRestAPIs {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 
+		//TODO: is this in the right place?
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -74,7 +76,7 @@ public class AuthRestAPIs {
 					HttpStatus.BAD_REQUEST);
 		}
 
-
+		//TODO: seems like a service logic
 		User user = new UserBuilder()
 				.setUsername(signUpRequest.getUsername())
 				.setFirstName(signUpRequest.getFirstname())

@@ -12,7 +12,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+//TODO: remove the usage of this class
+
 @Component
+@Deprecated
 public class Init implements CommandLineRunner {
     private PasswordEncoder encoder;
 
